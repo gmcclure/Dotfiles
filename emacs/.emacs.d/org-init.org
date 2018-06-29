@@ -1,0 +1,631 @@
+#+TITLE: GMac's Emacs
+#+STARTUP: content
+
+* GMac's Emacs
+
+** General Setup
+*** Debugging
+    #+BEGIN_SRC emacs-lisp
+    ;(setq debug-on-error t)
+    ;(setq debug-on-quit t)
+    #+END_SRC
+
+*** Personalization
+    #+BEGIN_SRC emacs-lisp
+    (setq user-full-name "Greg McClure")
+    (setq user-email-address "gmcclure@gmail.com")
+    (setq calendar-latitude 33.6510622)
+    (setq calendar-longitude -117.83008960000001)
+    (setq calendar-location-name "Irvine, CA")
+
+    (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+    (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
+    (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+    #+END_SRC
+
+*** Frame & Buffer Setup
+    #+BEGIN_SRC emacs-lisp
+    ;; Frame position
+    (add-to-list 'default-frame-alist '(width . 138))
+    (add-to-list 'default-frame-alist '(height . 40))
+    (set-frame-position (selected-frame) 140 41)
+
+    (setq inhibit-splash-screen t)
+    (setq initial-scratch-message "")
+    (setq initial-major-mode 'org-mode)
+    (setq-default major-mode 'org-mode)
+
+    (blink-cursor-mode -1)
+    (menu-bar-mode -1)
+    (scroll-bar-mode -1)
+    (tool-bar-mode -1)
+
+    (add-to-list 'default-frame-alist '(ns-appearance . dark))
+    #+END_SRC
+
+*** Theme
+    #+BEGIN_SRC emacs-lisp
+    ;(load-theme 'spacegray)
+    (load-theme 'spacemacs-dark t)
+    ;(load-theme 'sanityinc-solarized-dark t)
+    ;(load-theme 'sanityinc-tomorrow-eighties t)
+    #+END_SRC
+
+*** Typeface
+    #+BEGIN_SRC emacs-lisp
+    (when (eq system-type 'darwin)
+      (set-default-font "-*-Space Mono for Powerline-normal-normal-normal-*-16-*-*-*-m-0-iso10646-1"))
+    (set-face-attribute 'variable-pitch nil :family "Baskerville")
+    #+END_SRC
+
+*** UTF-8
+    #+BEGIN_SRC emacs-lisp
+    (setq locale-coding-system 'utf-8)
+    (set-terminal-coding-system 'utf-8-unix)
+    (set-keyboard-coding-system 'utf-8)
+    (set-selection-coding-system 'utf-8)
+    (prefer-coding-system 'utf-8)
+    (when (display-graphic-p)
+       (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
+    #+END_SRC
+
+*** Files & Buffers
+    #+BEGIN_SRC emacs-lisp
+    ;;; Files & buffers
+    (ido-mode t)
+    (defalias 'yes-or-no-p 'y-or-n-p)
+    (global-set-key (kbd "C-x C-b") 'ibuffer)
+    (set-default 'truncate-lines t)
+    #+END_SRC
+
+*** Backups
+    #+BEGIN_SRC emacs-lisp
+    (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+    #+END_SRC
+
+*** Custom Keys & Functions
+    #+BEGIN_SRC emacs-lisp
+    ;; Makes C-k kill an entire line when cursor is at line beginning
+    (setq kill-whole-line t)
+
+    (defun reload-init-file ()
+      "Reload init.el file"
+      (interactive)
+      (load user-init-file)
+      (message "Reloaded init.el OK."))
+   
+    (defun open-init-file ()
+      (interactive)
+      (find-file "~/.emacs.d/org-init.org"))
+
+    (use-package misc
+      :commands forward-to-word
+      :bind (("M-f" . forward-to-word)))
+
+    (setq mac-option-modifier 'super)
+    (setq mac-command-modifier 'meta)
+
+    (global-set-key "\M-z" 'zap-up-to-char)
+    (global-set-key (kbd "C-(") 'scroll-up-line)
+    (global-set-key (kbd "C-)") 'scroll-down-line)
+    (global-set-key (kbd "C-c 0") 'ansi-term)
+    (global-set-key (kbd "C-c i") 'open-init-file)
+    #+END_SRC
+
+*** Miscellaneous Customizations
+    #+BEGIN_SRC emacs-lisp
+    (use-package clean-aindent-mode
+      :config
+      (add-hook 'prog-mode-hook 'clean-aindent-mode))
+
+    (use-package volatile-highlights
+      :config
+      (volatile-highlights-mode t))
+
+    ; Flash the modeline for the bell
+    (setq ring-bell-function
+          (lambda ()
+            (let ((orig-fg (face-foreground 'mode-line)))
+              (set-face-foreground 'mode-line "#F2804F")
+              (run-with-idle-timer 0.1 nil
+                                   (lambda (fg) (set-face-foreground 'mode-line fg))
+                                   orig-fg))))
+
+    ; Close term buffer on exit
+    (defadvice term-handle-exit
+      (after term-kill-buffer-on-exit activate)
+      (kill-buffer))
+    #+END_SRC
+
+*** Autofill
+    #+BEGIN_SRC emacs-lisp
+    (add-hook 'text-mode-hook 'turn-on-auto-fill)
+    #+END_SRC
+
+** Mode Customizations
+*** Ace-Window
+    #+BEGIN_SRC emacs-lisp
+    (use-package ace-window
+      :ensure t
+      :bind (("M-o" . ace-window)))
+    #+END_SRC
+
+*** AucTeX
+    #+BEGIN_SRC emacs-lisp
+    (let ((my-path (expand-file-name "/Library/TeX/texbin")))
+    (setenv "PATH" (concat my-path ":" (getenv "PATH")))
+    (add-to-list 'exec-path my-path)) 
+    
+    ;; AucTeX settings
+
+    (setq-default TeX-master nil)
+    (setq TeX-parse-self t)
+    (setq TeX-auto-save t)    
+    (setq TeX-PDF-mode t)
+    
+    ;    (add-hook 'LaTeX-mode-hook
+    ;    (lambda ()
+    ;      (push
+    ;       '("latexmk" "latexmk -pdf %s" TeX-run-TeX nil t
+    ;         :help "Run latexmk on file")
+    ;        TeX-command-list)))
+    ;
+    ;    (add-hook 'TeX-mode-hook '(lambda () (setq TeX-command-default "latexmk")))
+    
+    ;    (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
+    ;               #'TeX-revert-document-buffer)
+        
+        ;; to use pdfview with auctex
+    ;    (add-hook 'LaTeX-mode-hook 'pdf-tools-install)
+        
+    ;; to use pdfview with auctex
+    (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+           TeX-source-correlate-start-server t)
+    (setq TeX-view-program-list '(("PDF Tools" "TeX-pdf-tools-sync-view"))
+      Tex-source-correlate-start-server t)
+    (add-hook 'TeX-after-compilation-finished-functions
+      #'TeX-revert-document-buffer)
+    #+END_SRC
+
+*** Avy
+    #+BEGIN_SRC emacs-lisp
+    ;; Avy
+    ;; Jump to things in Emacs, tree-style
+    ;; https://github.com/abo-abo/avy
+    (use-package avy
+      :ensure t
+      :bind (("C-:" . avy-goto-char))
+      :config
+      (setq avy-background t))
+    #+END_SRC
+
+*** Deft
+    #+BEGIN_SRC emacs-lisp
+    ;; Deft
+    ;; Quick, plain-text notes in Emacs
+    ;; https://github.com/jrblevin/deft
+    (use-package deft
+      :config
+      (setq deft-directory "~/Google Drive/Notes")
+      (setq deft-extension '("org" "txt"))
+      (setq deft-text-mode 'org-mode)
+      (setq deft-use-filename-as-title t)
+      (setq deft-use-filter-string-for-filename t)
+      (setq deft-auto-save-interval 0)
+      :bind
+      ("C-c d" . deft))
+    #+END_SRC
+
+*** Elfeed
+    #+BEGIN_SRC emacs-lisp
+    (use-package elfeed
+      :ensure t
+      :bind
+      ("C-x w" . 'elfeed))
+
+    (setq elfeed-feeds
+      '("https://news.ycombinator.com/rss"
+        "http://feeds.feedburner.com/brainpickings/rss"
+        "http://feeds.feedburner.com/OpenCulture"
+        "http://feeds.feedburner.com/universetoday/pYdq"
+        "http://feeds.101cookbooks.com/101cookbooks"
+        "http://feeds.feedburner.com/CookieAndKate"
+        "http://withfoodandlove.com/feed/"
+        "http://feeds.seriouseats.com/seriouseatsfeaturesvideos"
+        "http://feeds.feedburner.com/smittenkitchen"
+        "http://www.greenkitchenstories.com/feed/"
+        "http://feeds.feedburner.com/apartmenttherapy/thekitchn"
+        "http://feeds.feedburner.com/MinimalistBaker"
+        "http://feeds.feedburner.com/NaturallyElla"
+        "http://feeds.feedburner.com/CoolTools"
+        "http://feeds.feedburner.com/nofilmschool/"
+        "http://www.boston.com/bigpicture/index.xml"
+        "http://blog.makezine.com/index.xml"
+        "http://news.ycombinator.com/rss"
+        "http://love-python.blogspot.com/feeds/posts/default"
+        "http://feeds.feedburner.com/CssTricks"
+        "http://feeds.feedburner.com/Bludice"
+        "http://www.raywenderlich.com/category/swift/feed"
+        "https://www.hackingwithswift.com/articles/rss"
+        "http://feeds.feedburner.com/Catswhocode"
+        "http://www.techiedelight.com/feed/"
+        "http://feeds.feedburner.com/catonmat"
+        "http://programmingpraxis.com/feed/"
+        "http://feeds.feedburner.com/filmmakeriq"
+        "http://osxdaily.com/feed/"
+        "http://feeds.feedburner.com/Noupe"
+        "http://feeds.feedburner.com/design-milk"
+        "http://feeds.feedburner.com/weburbanist"
+        "http://feeds.feedburner.com/colossal"
+        "http://rss1.smashingmagazine.com/feed/"
+        "http://penpaperpencil.net/rss"
+        "http://www.pencilrevolution.com/feed/"
+        "http://feeds.feedburner.com/NotebookStories"
+        "http://wellappointeddesk.com/feed/"
+        "http://feeds.feedburner.com/penaddict/XQKI"
+        "http://therecordingrevolution.com/feed/"
+        "http://www.soundonsound.com/news/sosrssfeed.php"
+        "http://blog.456recordings.com/feed/"
+        "http://www.gearjunkies.com/feed/"
+        "http://ehomerecordingstudio.com/feed/"
+        "http://www.factmag.com/feed/"
+        "https://feedity.com/musicradar-com/VFtaWlJW.rss"
+        "http://feeds.feedburner.com/EffectsBay"
+        "http://feeds.feedburner.com/Musicians-Friend-Stupid-Deal"
+        "http://www.theguitarjournal.com/feed/"
+        "http://www.premierguitar.com/rss/Magazine.aspx"
+        "http://www.carryology.com/feed/"
+        "http://xkcd.com/rss.xml"
+        "http://www.laist.com/index.rdf"
+        "http://feeds.feedburner.com/thesartorialist"
+        "http://winkbooks.tumblr.com/rss"
+        "http://feeds.feedburner.com/nybooks"
+        "http://tetw.tumblr.com/rss"
+        "http://feeds.nytimes.com/nyt/rss/Books"))
+
+;    (use-package elfeed-org
+;      :ensure t
+;      :config
+;      (elfeed-org)
+;      (setq rmh-elfeed-org-files (list "~/Google Drive/Org/elfeed.org")))
+    #+END_SRC
+
+*** Exec-Path-From-Shell
+    #+BEGIN_SRC emacs-lisp
+    (use-package exec-path-from-shell
+      :config
+      (exec-path-from-shell-initialize))
+    #+END_SRC
+
+*** Diary
+    #+BEGIN_SRC emacs-lisp
+    (setq diary-file "~/Google Drive/Org/Diary")
+    #+END_SRC
+
+*** Dired
+    #+BEGIN_SRC emacs-lisp
+    ;; Dired
+    (setq dired-listing-switches "-alh")
+    (setq dired-recursive-copies (quote always))
+    (setq dired-recursive-deletes (quote top))
+
+    ;; Dired-x
+    (require 'dired-x)
+    (setq-default dired-omit-files-p t) ; Buffer local variable
+    (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
+    #+END_SRC
+    
+*** Flyspell
+    #+BEGIN_SRC emacs-lisp
+    (setq ispell-program-name "/usr/local/bin/aspell")
+    #+END_SRC
+
+*** Helm
+    #+BEGIN_SRC emacs-lisp
+    (use-package helm
+    :ensure t
+    :config
+
+    ;; Must set before helm-config
+    (setq helm-command-prefix-key "C-c h")
+ 
+    (require 'helm-config)
+    (require 'helm-eshell)
+    (require 'helm-files)
+    (require 'helm-grep)
+ 
+    (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
+    (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
+    (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+ 
+    (define-key helm-grep-mode-map (kbd "<return>")  'helm-grep-mode-jump-other-window)
+    (define-key helm-grep-mode-map (kbd "n")  'helm-grep-mode-jump-other-window-forward)
+    (define-key helm-grep-mode-map (kbd "p")  'helm-grep-mode-jump-other-window-backward)
+ 
+    (setq
+     helm-google-suggest-use-curl-p t
+     helm-scroll-amount 4 ; scroll 4 lines other window using M-<next>/M-<prior>
+     helm-quick-update t ; do not display invisible candidates
+     helm-idle-delay 0.01 ; be idle for this many seconds, before updating in delayed sources.
+     helm-input-idle-delay 0.01 ; be idle for this many seconds, before updating candidate buffer
+     helm-ff-search-library-in-sexp t ; search for library in `require' and `declare-function' sexp.
+ 
+     helm-split-window-default-side 'other ;; open helm buffer in another window
+     helm-split-window-in-side-p t ;; open helm buffer inside current window, not occupy whole other window
+     helm-buffers-favorite-modes (append helm-buffers-favorite-modes
+ 					'(picture-mode artist-mode))
+     helm-candidate-number-limit 100 ; limit the number of displayed canidates
+     helm-M-x-requires-pattern 0     ; show all candidates when set to 0
+     helm-boring-file-regexp-list
+     '("\\.git$" "\\.hg$" "\\.svn$" "\\.CVS$" "\\._darcs$" "\\.la$" "\\.o$" "\\.i$") ; do not show these files in helm buffer
+     helm-ff-file-name-history-use-recentf t
+     helm-move-to-line-cycle-in-source t ; move to end or beginning of source
+                                          ; when reaching top or bottom of source.
+     ido-use-virtual-buffers t      ; Needed in helm-buffers-list
+     helm-buffers-fuzzy-matching t          ; fuzzy matching buffer names when non--nil
+                                          ; useful in helm-mini that lists buffers
+     )
+ 
+    ;; Save current position to mark ring when jumping to a different place
+    (add-hook 'helm-goto-line-before-hook 'helm-save-current-pos-to-mark-ring)
+   
+    (helm-mode 1)
+  
+    :bind
+    ("M-x" . helm-M-x)
+    ;("C-x C-m" . helm-M-x)
+    ("C-;" . helm-M-x)
+    ("C-x b" . helm-mini)
+    ("C-x C-f" . helm-find-files))
+    #+END_SRC
+
+*** Hydra
+    #+BEGIN_SRC emacs-lisp
+    (use-package hydra
+      :ensure t)
+    #+END_SRC
+
+*** Hippie-Expand
+    #+BEGIN_SRC emacs-lisp
+    (global-set-key "\M-/" 'hippie-expand)    
+    #+END_SRC
+
+*** Magit
+    #+BEGIN_SRC emacs-lisp
+    (global-set-key (kbd "C-x g") 'magit-status)
+    #+END_SRC
+
+*** Mu4e
+    #+BEGIN_SRC emacs-lisp
+    ;; Mu4e
+    (add-to-list 'load-path "/usr/local/Cellar/mu/1.0/share/emacs/site-lisp/mu/mu4e")
+    (setq mu4e-mu-binary (executable-find "/usr/local/bin/mu"))
+    (require 'mu4e)
+    (require 'org-mu4e)
+    (global-set-key (kbd "C-c m") 'mu4e)
+    
+    (setq mail-user-agent 'mu4e-user-agent)
+
+    ;; default
+    (setq mu4e-maildir (expand-file-name "~/Maildir/Gmail"))
+    (setq mu4e-drafts-folder "/[Gmail].Drafts")
+    (setq mu4e-sent-folder   "/[Gmail].Sent Mail")
+    (setq mu4e-trash-folder  "/[Gmail].Trash")
+    (setq mu4e-refile-folder  "/[Gmail].All Mail")
+    
+    ;; don't save message to Sent Messages, Gmail/IMAP takes care of this
+    (setq mu4e-sent-messages-behavior 'delete)
+
+    ;; needed for mbsync
+    (setq mu4e-change-filenames-when-moving t)
+    
+    ;; (See the documentation for `mu4e-sent-messages-behavior' if you have
+    ;; additional non-Gmail addresses and want assign them different
+    ;; behavior.)
+
+    ;; a little something about me
+    (setq
+      user-email-address "gmcclure@gmail.com"
+      user-full-name "Greg McClure"
+      mu4e-compose-signature
+       (concat
+         "Peace, love, global cooling,\n"
+	 "// G\n"))
+
+    ;; setup some handy shortcuts
+    ;; you can quickly switch to your Inbox -- press ``ji''
+    ;; then, when you want archive some messages, move them to
+    ;; the 'All Mail' folder by pressing ``ma''.
+    
+    (setq mu4e-maildir-shortcuts
+        '(("/INBOX"               . ?i)
+    	  ("/[Gmail].Sent Mail"   . ?s)
+    	  ("/[Gmail].Trash"       . ?t)
+    	  ("/[Gmail].All Mail"    . ?a)))
+    
+    ;; allow for updating mail using 'U' in the main view:
+    (setq mu4e-get-mail-command "mbsync Gmail")
+
+    (setq mu4e-view-show-images t)
+    (when (fboundp 'imagemagick-register-types)
+      (imagemagick-register-types))
+
+    (add-to-list 'mu4e-view-actions
+      '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+
+    ;; render html to text
+    ;(setq mu4e-html2text-command
+    ;  "textutil -stdin -format html -convert txt -stdout")
+
+    ;; sending mail
+    (require 'smtpmail)
+    (setq message-send-mail-function 'smtpmail-send-it
+       starttls-use-gnutls t
+       smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+       smtpmail-auth-credentials (expand-file-name "~/.authinfo")
+       smtpmail-default-smtp-server "smtp.gmail.com"
+       smtpmail-smtp-server "smtp.gmail.com"
+       smtpmail-smtp-service 587)
+
+    ;; no need to keep the buffer around after the message is sent
+    (setq message-kill-buffer-on-exit t)
+
+    ;; some org functionality in the compose buffer
+    (add-hook 'message-mode-hook 'turn-on-orgtbl)
+    (add-hook 'message-mode-hook 'turn-on-orgstruct++)
+
+    (setq mu4e-attachment-dir  "~/Downloads")
+
+    ;; in progress ...
+    (defun msg-to-pdf (msg)
+    "Convert msg to pdf and show it in Preview."
+      (shell-command
+       (format "/usr/local/bin/wkhtmltopdf %s /Tmp/Email-PDFs/email.pdf" msg)))
+
+    (add-to-list 'mu4e-view-actions
+      '("mac pdf" . msg-to-pdf) t)
+    #+END_SRC
+
+*** Multiple-Cursors
+    #+BEGIN_SRC emacs-lisp
+    (use-package multiple-cursors
+      :ensure t
+      :bind
+      ("C-S-c C-S-c" . mc/edit-lines)
+      ("C->" . mc/mark-next-like-this)
+      ("C-<" . mc/mark-previous-like-this)
+      ("C-c C-<" . mc/mark-all-like-this))
+    #+END_SRC
+
+*** Org
+    #+BEGIN_SRC emacs-lisp
+    (require 'org-install)
+    ;(require 'org-habit)
+    ;(add-to-list 'org-modules "org-habit")
+    ;(setq org-habit-preceding-days 7
+    ;      org-habit-following-days 1
+    ;      org-habit-graph-column 80
+    ;      org-habit-show-habits-only-for-today t
+    ;      org-habit-show-all-today t)
+ 
+    (require 'org-bullets)
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+    (setq org-ellipsis "⤵")
+ 
+    (setq org-directory "~/Google Drive/Org")
+ 
+    (global-set-key "\C-cl" 'org-store-link)
+    (global-set-key "\C-cc" 'org-capture)
+    (global-set-key "\C-ca" 'org-agenda)
+    (global-set-key "\C-cb" 'org-iswitchb)
+ 
+    (setq org-agenda-files 
+      (list 
+        "~/Google Drive/Org/life.org"
+	"~/Google Drive/Org/notes.org"
+	"~/Google Drive/Org/todos.org"))
+
+    (setq org-log-done 'time)
+    (setq org-default-notes-file "~/Google Drive/Org/notes.org")
+    (global-set-key (kbd "C-c o")
+ 		   (lambda () (interactive) (find-file "~/Google Drive/Org/life.org")))
+ 
+    (require 'org-journal)
+    (setq org-journal-dir "~/Google Drive/Journal")
+
+    (setq org-clock-persist 'history)
+    (org-clock-persistence-insinuate)
+
+    (setq org-capture-templates
+      '(("t" "Todo" entry (file+headline "~/Google Drive/Org/todos.org" "TODOs")
+             "* TODO %?\n")))
+
+    (defun org-force-open-current-window ()
+      (interactive)
+      (let ((org-link-frame-setup (quote
+                                   ((vm . vm-visit-folder-other-frame)
+    			            (vm-imap . vm-visit-imap-folder-other-frame)
+    				    (gnus . org-gnus-no-new-news)
+    				    (file . find-file)
+    				    (wl . wl-other-frame)))
+              ))
+        (org-open-at-point)))
+    
+    ;; Depending on universal argument try opening link
+    (defun org-open-maybe (&optional arg)
+      (interactive "P")
+      (if arg
+          (org-open-at-point)
+        (org-force-open-current-window)))
+
+    ;; Redefine file opening without clobbering universal argumnet
+    (define-key org-mode-map "\C-c\C-o" 'org-open-maybe)
+
+    ;; Speed commands
+    (setq org-use-speed-commands t)
+    #+END_SRC
+
+*** Page Break Lines
+     #+BEGIN_SRC emacs-lisp
+     (use-package page-break-lines)
+     #+END_SRC
+
+*** PowerThesaurus
+     #+BEGIN_SRC emacs-lisp
+    (use-package powerthesaurus
+      :ensure t
+      :bind
+      ("M-p" . 'powerthesaurus-lookup-word-at-point))
+     #+END_SRC
+
+*** PDF-Tools
+    #+BEGIN_SRC emacs-lisp
+    (use-package pdf-tools
+      :ensure t
+      :config
+      (custom-set-variables
+        '(pdf-tools-handle-upgrades nil)) ; Use brew upgrade pdf-tools instead.
+      (setq pdf-info-epdfinfo-program "/usr/local/bin/epdfinfo"))
+    (pdf-tools-install)
+    #+END_SRC
+
+*** Slime
+    #+BEGIN_SRC emacs-lisp
+    (setq inferior-lisp-program "/usr/local/bin/sbcl")
+    (setq slime-contribs '(slime-fancy))
+    #+END_SRC
+
+*** Spaceline
+    #+BEGIN_SRC emacs-lisp
+      ; The ns-use-srgb-colorspace setting makes spaceline colors
+      ; consistent, but it also dulls the colors of the theme.
+      ;(setq ns-use-srgb-colorspace nil)
+
+      (use-package spaceline
+	:ensure t
+	:config
+	(spaceline-emacs-theme)
+	(spaceline-helm-mode 1)
+	(powerline-reset))
+    #+END_SRC
+
+*** Swiper
+    #+BEGIN_SRC emacs-lisp
+    (use-package swiper
+      :ensure try
+      :config
+      (ivy-mode 1)
+      (setq ivy-use-virtual-buffers t)
+      (setq ivy-count-format "(%d/%d) ")
+      :bind
+      ("C-s" . 'swiper))
+    #+END_SRC
+
+*** Which-Key
+    #+BEGIN_SRC emacs-lisp
+    (use-package which-key
+      :ensure t
+      :config
+      (which-key-mode 1))
+    #+END_SRC
+
