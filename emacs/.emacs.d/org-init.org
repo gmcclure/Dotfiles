@@ -267,7 +267,6 @@
         "http://www.soundonsound.com/news/sosrssfeed.php"
         "http://blog.456recordings.com/feed/"
         "http://www.gearjunkies.com/feed/"
-        "http://ehomerecordingstudio.com/feed/"
         "http://www.factmag.com/feed/"
         "https://feedity.com/musicradar-com/VFtaWlJW.rss"
         "http://feeds.feedburner.com/EffectsBay"
@@ -476,6 +475,8 @@
 
     (setq mu4e-attachment-dir  "~/Downloads")
 
+    (setq mu4e-compose-format-flowed t)
+
     ;; in progress ...
     (defun msg-to-pdf (msg)
     "Convert msg to pdf and show it in Preview."
@@ -578,6 +579,13 @@
       ("M-p" . 'powerthesaurus-lookup-word-at-point))
      #+END_SRC
 
+*** Projectile
+    #+BEGIN_SRC emacs-lisp
+    (projectile-global-mode)
+    (setq projectile-completion-system 'helm)
+    (helm-projectile-on)
+    #+END_SRC
+
 *** PDF-Tools
     #+BEGIN_SRC emacs-lisp
     (use-package pdf-tools
@@ -619,6 +627,28 @@
       (setq ivy-count-format "(%d/%d) ")
       :bind
       ("C-s" . 'swiper))
+    #+END_SRC
+
+*** Web-Mode
+    #+BEGIN_SRC emacs-lisp
+    (use-package web-mode
+      :ensure t
+      :init
+      (setq web-mode-markup-indent-offset 2)
+      (setq web-mode-code-indent-offset 2)
+      (setq web-mode-css-indent-offset 2)
+
+      (setq web-mode-enable-auto-pairing t)
+      (setq web-mode-enable-auto-expanding t)
+      (setq web-mode-enable-css-colorization t)
+      :mode
+      (("\\.phtml\\'" . web-mode)
+       ("\\.tpl\\.php\\'" . web-mode)
+       ("\\.[agj]sp\\'" . web-mode)
+       ("\\.as[cp]x\\'" . web-mode)
+       ("\\.erb\\'" . web-mode)
+       ("\\.mustache\\'" . web-mode)
+       ("\\.djhtml\\'" . web-mode)))
     #+END_SRC
 
 *** Which-Key

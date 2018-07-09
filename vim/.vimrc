@@ -79,6 +79,7 @@ filetype indent on
 "----------------------------------------------------------
 
 set backspace=start,indent,eol
+set clipboard=unnamed
 set foldcolumn=2
 set fileformats="mac,unix,dos"
 set foldenable

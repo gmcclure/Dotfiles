@@ -3,7 +3,7 @@ export CLICOLOR_FORCE=1
 export EDITOR='vim'
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-export PATH="/Users/gmcclure/bin:/usr/local/sbin:/Users/gmcclure/Library/Python/2.7/bin:$PATH"
+export PATH="/Users/gmcclure/Bin:/usr/local/sbin:/Users/gmcclure/Library/Python/2.7/bin:$PATH"
 export PROMPT_DEVICE_COLOR="$(tput bold)$(tput setaf 5)"
 export PROMPT_DIR_COLOR="$(tput bold)$(tput setaf 9)"
 export PROMPT_GIT_STATUS_COLOR="$(tput bold)$(tput setaf 2)"
@@ -46,6 +46,8 @@ fi
 gpip() {
     PIP_REQUIRE_VIRTUALENV="" pip3 "$@"
 }
+
+source /usr/local/etc/profile.d/z.sh
 
 eval "$(direnv hook bash)"
 eval "$(rbenv init -)"
