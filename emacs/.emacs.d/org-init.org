@@ -115,10 +115,12 @@
 *** Miscellaneous Customizations
     #+BEGIN_SRC emacs-lisp
     (use-package clean-aindent-mode
+      :ensure t
       :config
       (add-hook 'prog-mode-hook 'clean-aindent-mode))
 
     (use-package volatile-highlights
+      :ensure t
       :config
       (volatile-highlights-mode t))
 
@@ -292,6 +294,7 @@
 *** Exec-Path-From-Shell
     #+BEGIN_SRC emacs-lisp
     (use-package exec-path-from-shell
+      :ensure t
       :config
       (exec-path-from-shell-initialize))
     #+END_SRC
@@ -387,6 +390,21 @@
 *** Hippie-Expand
     #+BEGIN_SRC emacs-lisp
     (global-set-key "\M-/" 'hippie-expand)    
+    #+END_SRC
+
+*** Ivy (Swiper)
+    #+BEGIN_SRC emacs-lisp
+    (use-package ivy
+      :ensure try
+      :config
+      (ivy-mode 1)
+      (setq ivy-use-virtual-buffers t)
+      (setq enable-recursive-minibuffers t)
+      (setq ivy-count-format "(%d/%d) "))
+
+    (use-package swiper
+      :bind
+      ("C-s" . 'swiper))
     #+END_SRC
 
 *** Magit
@@ -615,18 +633,6 @@
 	(spaceline-emacs-theme)
 	(spaceline-helm-mode 1)
 	(powerline-reset))
-    #+END_SRC
-
-*** Swiper
-    #+BEGIN_SRC emacs-lisp
-    (use-package swiper
-      :ensure try
-      :config
-      (ivy-mode 1)
-      (setq ivy-use-virtual-buffers t)
-      (setq ivy-count-format "(%d/%d) ")
-      :bind
-      ("C-s" . 'swiper))
     #+END_SRC
 
 *** Web-Mode

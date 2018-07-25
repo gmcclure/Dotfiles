@@ -47,7 +47,7 @@ gpip() {
     PIP_REQUIRE_VIRTUALENV="" pip3 "$@"
 }
 
-source /usr/local/etc/profile.d/z.sh
+# source /usr/local/etc/profile.d/z.sh
 
-eval "$(direnv hook bash)"
-eval "$(rbenv init -)"
+# eval "$(direnv hook bash)"
+# eval "$(rbenv init -)"
