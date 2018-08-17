@@ -23,6 +23,7 @@ alias mkdir='mkdir -p'
 alias tree='tree -C'
 alias vimbash='edit ~/.bashrc'
 alias love='/Applications/love.app/Contents/MacOS/love'
+alias sbcl='rlwrap /usr/local/bin/sbcl'
 
 #### shims and inits
 
