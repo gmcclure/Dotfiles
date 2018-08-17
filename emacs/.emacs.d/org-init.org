@@ -317,6 +317,11 @@
     (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
     #+END_SRC
     
+*** Elpy
+    #+BEGIN_SRC emacs-lisp
+    (when (require 'elpy nil t)
+      (elpy-enable))
+    #+END_SRC
 *** Flyspell
     #+BEGIN_SRC emacs-lisp
     (setq ispell-program-name "/usr/local/bin/aspell")
