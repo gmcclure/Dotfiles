@@ -4,3 +4,4 @@
 [alias]
 	ci = commit
 	st = status
+	pm = push -u origin master
