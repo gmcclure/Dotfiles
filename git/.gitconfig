@@ -1,0 +1,6 @@
+[user]
+	name = G McClure
+	email = gmcclure@gmail.com
+[alias]
+	ci = commit
+	st = status
