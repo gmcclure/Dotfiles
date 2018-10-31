@@ -19,3 +19,4 @@
 
 (org-babel-load-file (expand-file-name "~/.emacs.d/org-init.org"))
 (put 'downcase-region 'disabled nil)
+(put 'dired-find-alternate-file 'disabled nil)

@@ -589,6 +589,19 @@
     (setq org-use-speed-commands t)
     #+END_SRC
 
+*** Org-Drill
+    #+BEGIN_SRC emacs-lisp
+    (add-to-list 'load-path "~/Etc/Lib/org-mode/contrib/lisp/")
+    (use-package org-drill
+      :config (progn
+                (add-to-list 'org-modules 'org-drill)
+		(setq org-drill-add-random-noise-to-intervals-p t)
+		(setq org-drill-hint-separator "||")
+		(setq org-drill-left-cloze-delimiter "<|")
+		(setq org-drill-right-cloze-delimiter "|>")
+		(setq org-drill-learn-fraction 0.25)))
+    #+END_SRC
+
 *** Page Break Lines
      #+BEGIN_SRC emacs-lisp
      (use-package page-break-lines)
