@@ -1,4 +1,4 @@
-#### env vars
+### env vars
 export CLICOLOR_FORCE=1
 export EDITOR='vim'
 export LANG=en_US.UTF-8
@@ -48,7 +48,7 @@ gpip() {
     PIP_REQUIRE_VIRTUALENV="" pip3 "$@"
 }
 
-# source /usr/local/etc/profile.d/z.sh
+source /usr/local/etc/profile.d/z.sh
 
 # eval "$(direnv hook bash)"
-# eval "$(rbenv init -)"
+eval "$(rbenv init -)"
