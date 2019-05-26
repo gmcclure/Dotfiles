@@ -131,8 +131,9 @@ endtry
 
 syntax on
 
-" Tomorrow-Night-Eighties
-colo space-vim-dark
+colo Tomorrow-Night-Eighties
+" colo space-vim-dark
+" colo solarized
 
 " Set font
 " set gfn=Source\ Code\ Pro\ for\ Powerline:h18
