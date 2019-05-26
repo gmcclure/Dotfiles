@@ -10,6 +10,13 @@
     ;(setq debug-on-quit t)
     #+END_SRC
 
+*** Environment Variables
+    #+BEGIN_SRC emacs-lisp
+    ;; Necessary to set this for epdinfo rebuild
+    (setenv "PKG_CONFIG_PATH"
+      "/usr/local/opt/libffi/lib/pkgconfig")
+    #+END_SRC
+
 *** Personalization
     #+BEGIN_SRC emacs-lisp
     (setq user-full-name "Greg McClure")
