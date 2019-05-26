@@ -589,6 +589,11 @@
 
     ;; Speed commands
     (setq org-use-speed-commands t)
+
+    ;; Avoid edits in invisible areas
+    (setq org-catch-invisible-edits 'show-and-error)
+
+    (setq org-cycle-separator-lines 0)
     #+END_SRC
 
 *** Org-Drill
