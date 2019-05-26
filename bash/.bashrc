@@ -3,14 +3,16 @@ export CLICOLOR_FORCE=1
 export EDITOR='vim'
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
+export LD_FLAGS="-L/usr/local/opt/libffi/lib"
 export PATH="/Users/gmcclure/Bin:/usr/local/sbin:/Users/gmcclure/Library/Python/2.7/bin:$PATH"
+export PKG_CONFIG_PATH="/usr/local/opt/libffi/lib/pkgconfig"
 export PROMPT_DEVICE_COLOR="$(tput bold)$(tput setaf 5)"
 export PROMPT_DIR_COLOR="$(tput bold)$(tput setaf 9)"
 export PROMPT_GIT_STATUS_COLOR="$(tput bold)$(tput setaf 2)"
 export PROMPT_USER_COLOR="$(tput bold)$(tput setaf 12)"
 export TERM=xterm-256color
 
-#### aliases
+### #aliases
 alias e="$EDITOR"
 alias edit="$EDITOR"
 alias gpm="git push -u origin master"
