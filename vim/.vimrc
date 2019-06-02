@@ -33,9 +33,7 @@ Plug 'bling/vim-airline'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
 Plug 'jszakmeister/vim-togglecursor'
-Plug 'chriskempson/vim-tomorrow-theme'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'goatslacker/mango.vim'
 Plug 'tpope/vim-rails'
 Plug 'pangloss/vim-javascript'
 Plug 'Lokaltog/vim-easymotion'
@@ -49,15 +47,11 @@ Plug 'honza/vim-snippets'
 Plug 'junegunn/vim-pseudocl'
 Plug 'junegunn/vim-oblique'
 Plug 'fatih/vim-go'
-Plug 'mbbill/desertEx'
 Plug 'tpope/vim-repeat'
 Plug 'sheerun/vim-polyglot'
 Plug 'burnettk/vim-angular'
-Plug 'lambdatoast/elm.vim'
-Plug 'jcmartin/stanza.vim'
 Plug 'ledger/vim-ledger'
 Plug 'liuchengxu/space-vim-dark'
-Plug 'zah/nim.vim'
 Plug 'wincent/terminus'
 Plug 'hrother/offlineimaprc.vim'
 Plug '~/.vim/local'
@@ -131,9 +125,8 @@ endtry
 
 syntax on
 
-colo Tomorrow-Night-Eighties
 " colo space-vim-dark
-" colo solarized
+colo solarized
 
 " Set font
 " set gfn=Source\ Code\ Pro\ for\ Powerline:h18
