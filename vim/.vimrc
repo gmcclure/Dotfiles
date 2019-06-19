@@ -55,6 +55,7 @@ Plug 'ledger/vim-ledger'
 Plug 'liuchengxu/space-vim-dark'
 Plug 'wincent/terminus'
 Plug 'hrother/offlineimaprc.vim'
+Plug 'tpope/vim-liquid'
 Plug '~/.vim/local'
 
 call plug#end()
