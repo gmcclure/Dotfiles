@@ -337,7 +337,7 @@ let g:mustache_abbreviations = 1
 " neocomplete
 nnoremap <leader>ct :NeoCompleteToggle<cr>
 let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#snippets_directory = '~/.vim/bundle/vim-snippets/snippets'
+let g:neosnippet#snippets_directory = '~/.vim/snippets'
 
 imap <c-k> <Plug>(neosnippet_expand_or_jump)
 smap <c-k> <Plug>(neosnippet_expand_or_jump)
