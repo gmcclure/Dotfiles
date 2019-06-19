@@ -372,6 +372,7 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
 " togglecursor
+let g:togglecursor_default = 'block'
 let g:togglecursor_leave = 'underline'
 
 " }}}
