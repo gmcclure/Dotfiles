@@ -7,6 +7,7 @@
 " (*) you assume you'll remember the year, but you won't
 " Version: 1.1 - Sat Jul 20 2:56 p.m. PDT 2013
 " Version: 1.2 - Sun Mar  2 12:08 p.m. PST 2014
+" Version: 1.3 - Sun Jun  2 3:06 p.m. PDT 2019
 "
 " Ideas taken from:
 "   http://amix.dk/vim/vimrc.html
