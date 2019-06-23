@@ -240,6 +240,7 @@
 
     (setq elfeed-feeds
       '("https://news.ycombinator.com/rss"
+        "https://lobste.rs/rss"
         "http://feeds.feedburner.com/brainpickings/rss"
         "http://feeds.feedburner.com/OpenCulture"
         "http://feeds.feedburner.com/universetoday/pYdq"
