@@ -53,17 +53,17 @@
 *** Theme
     #+BEGIN_SRC emacs-lisp
     ;(load-theme 'spacegray)
-    (load-theme 'spacemacs-dark t)
+    ;(load-theme 'spacemacs-dark t)
     ;(load-theme 'doom-one t)
-    ;(load-theme 'sanityinc-solarized-dark t)
+    (load-theme 'sanityinc-solarized-dark t)
     ;(load-theme 'sanityinc-tomorrow-eighties t)
     #+END_SRC
 
 *** Typeface
     #+BEGIN_SRC emacs-lisp
     (when (eq system-type 'darwin)
-      ;(set-default-font "-*-Space Mono for Powerline-normal-normal-normal-*-16-*-*-*-m-0-iso10646-1"))
-      (set-default-font "-*-monofur for Powerline-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1"))
+      (set-default-font "-*-Space Mono for Powerline-normal-normal-normal-*-18-*-*-*-m-0-iso10646-1"))
+      ;(set-default-font "-*-monofur for Powerline-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1"))
     (set-face-attribute 'variable-pitch nil :family "Baskerville")
     #+END_SRC
 
