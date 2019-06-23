@@ -84,7 +84,6 @@ set grepformat=%f:%l:%m
 set grepprg=/usr/local/bin/ack
 set hidden
 set history=1000
-set highlight=r:i,r:l
 set ignorecase
 set incsearch
 set laststatus=2
