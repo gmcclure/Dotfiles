@@ -63,7 +63,6 @@ call plug#end()
 " vim should react to filetype
 filetype on
 filetype plugin on
-filetype indent on
 
 " NeoBundle
 " NeoBundleCheck
@@ -75,6 +74,7 @@ filetype indent on
 
 set backspace=start,indent,eol
 set clipboard=unnamed
+set display+=lastline
 set foldcolumn=2
 set fileformats="mac,unix,dos"
 set foldenable
@@ -130,7 +130,8 @@ colo space-vim-dark
 
 " Set font
 " set gfn=Source\ Code\ Pro\ for\ Powerline:h18
-set gfn=monofur\ for\ Powerline:h20
+" set gfn=monofur\ for\ Powerline:h20
+set gfn=Fira\ Mono\ for\ Powerline:h18
 
 " }}}
 
@@ -233,17 +234,17 @@ com! WP call WordProcessorMode()
 
 " :: Text, Tabs, & Indents {{{
 "----------------------------------------------------------
-
-set nowrap
-
-set ts=4
-set shiftwidth=4
-set softtabstop=4
-set expandtab
+filetype indent on
 
 set autoindent
 set copyindent
+set expandtab
+set nowrap
+set shiftround
+set softtabstop=4
+set shiftwidth=4
 set smartindent
+set ts=4
 
 " }}}
 
