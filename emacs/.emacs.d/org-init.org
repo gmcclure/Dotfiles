@@ -33,9 +33,9 @@
 *** Frame & Buffer Setup
     #+BEGIN_SRC emacs-lisp
     ;; Frame position
-    (add-to-list 'default-frame-alist '(width . 138))
-    (add-to-list 'default-frame-alist '(height . 48))
-    (set-frame-position (selected-frame) 140 41)
+    (add-to-list 'default-frame-alist '(width . 127))
+    (add-to-list 'default-frame-alist '(height . 36))
+    (set-frame-position (selected-frame) 131 52)
 
     (setq inhibit-splash-screen t)
     (setq initial-scratch-message "")
