@@ -4,7 +4,7 @@ export EDITOR='nvim'
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LD_FLAGS="-L/usr/local/opt/libffi/lib"
-export PATH="/Users/gmcclure/Bin:/usr/local/sbin:/Users/gmcclure/Library/Python/2.7/bin:$PATH"
+export PATH="/Users/gmcclure/Bin:/usr/local/sbin:/Users/gmcclure/Library/Python/2.7/bin:/Users/gmcclure/.nimble/bin:$PATH"
 export PKG_CONFIG_PATH="/usr/local/opt/libffi/lib/pkgconfig"
 export PROMPT_DEVICE_COLOR="$(tput bold)$(tput setaf 5)"
 export PROMPT_DIR_COLOR="$(tput bold)$(tput setaf 9)"
@@ -13,6 +13,7 @@ export PROMPT_USER_COLOR="$(tput bold)$(tput setaf 12)"
 export TERM=xterm-256color
 
 ### #aliases
+alias be="bundle exec"
 alias e="$EDITOR"
 alias edit="$EDITOR"
 alias gpm="git push -u origin master"
