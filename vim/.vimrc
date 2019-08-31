@@ -56,6 +56,7 @@ Plug 'liuchengxu/space-vim-dark'
 Plug 'wincent/terminus'
 Plug 'hrother/offlineimaprc.vim'
 Plug 'tpope/vim-liquid'
+Plug 'mattn/emmet-vim'
 Plug '~/.vim/local'
 
 call plug#end()
@@ -130,8 +131,8 @@ colo space-vim-dark
 
 " Set font
 " set gfn=Source\ Code\ Pro\ for\ Powerline:h18
-" set gfn=monofur\ for\ Powerline:h20
-set gfn=Fira\ Mono\ for\ Powerline:h18
+set gfn=monofur\ for\ Powerline:h20
+" set gfn=Fira\ Mono\ for\ Powerline:h18
 
 " }}}
 
