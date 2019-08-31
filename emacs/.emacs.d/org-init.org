@@ -52,11 +52,7 @@
 
 *** Theme
     #+BEGIN_SRC emacs-lisp
-    ;(load-theme 'spacegray)
-    ;(load-theme 'spacemacs-dark t)
-    ;(load-theme 'doom-one t)
-    (load-theme 'sanityinc-solarized-dark t)
-    ;(load-theme 'sanityinc-tomorrow-eighties t)
+    (load-theme 'doom-solarized-dark t)
     #+END_SRC
 
 *** Typeface
