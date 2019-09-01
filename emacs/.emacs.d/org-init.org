@@ -547,7 +547,8 @@
     (global-set-key "\C-cb" 'org-iswitchb)
  
     (setq org-agenda-files 
-      (list 
+      (list
+        "~/Google Drive/Org/journal.org"
         "~/Google Drive/Org/life.org"
 	"~/Google Drive/Org/notes.org"
 	"~/Google Drive/Org/todos.org"))
@@ -565,7 +566,9 @@
 
     (setq org-capture-templates
       '(("t" "Todo" entry (file+headline "~/Google Drive/Org/todos.org" "TODOs")
-             "* TODO %?\n")))
+             "* TODO %?\n")
+	("j" "Post" entry (file+datetree "~/Google Drive/Org/journal.org")
+	     "* %U %^{Title}\n %?")))
 
     (defun org-force-open-current-window ()
       (interactive)
