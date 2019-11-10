@@ -1,3 +1,16 @@
+hs.logger.defaultLogLevel = "info"
+
+function winXYMove(x, y)
+   return function()
+      local win = hs.window.focusedWindow()
+      local f = win:frame()
+
+      f.x = f.x + x
+      f.y = f.y + y
+      win:setFrame(f, 0)
+   end
+end
+
 function center()
     local win = hs.window.focusedWindow()
     local f = win:frame()
@@ -50,6 +63,12 @@ end
 hs.hotkey.bind({"cmd", "alt"}, "delete", function() center() end)
 hs.hotkey.bind({"cmd", "alt"}, "[", function() resize(1200, 800) end)
 hs.hotkey.bind({"cmd", "alt"}, "]", function() resize(1400, 900) end)
+hs.hotkey.bind({"cmd", "alt", "shift"}, "[", function() resize(1600, 1200) end)
+hs.hotkey.bind({"cmd", "alt", "shift"}, "]", function() resize(1800, 1400) end)
+hs.hotkey.bind({"ctrl", "alt", "cmd"}, "l", winXYMove(20, 0))
+hs.hotkey.bind({"ctrl", "alt", "cmd"}, "h", winXYMove(-20, 0))
+hs.hotkey.bind({"ctrl", "alt", "cmd"}, "j", winXYMove(0, 20))
+hs.hotkey.bind({"ctrl", "alt", "cmd"}, "k", winXYMove(0, -20))
 
 function reloadConfig(files)
     doReload = false
