@@ -15,6 +15,8 @@
     ;; Necessary to set this for epdinfo rebuild
     (setenv "PKG_CONFIG_PATH"
       "/usr/local/opt/libffi/lib/pkgconfig")
+    (setenv "WORKON_HOME"
+      "/Users/gmcclure/Etc/Virtualenvs")
     #+END_SRC
 
 *** Personalization
@@ -331,6 +333,9 @@
     #+BEGIN_SRC emacs-lisp
     (when (require 'elpy nil t)
       (elpy-enable))
+    (setq elpy-shell-echo-output nil
+          python-shell-interpreter "ipython"
+          python-shell-interpreter-args "--simple-prompt -c exec('__import__(\\'readline\\')') -i")
     #+END_SRC
 *** Flyspell
     #+BEGIN_SRC emacs-lisp
@@ -381,8 +386,12 @@
      ido-use-virtual-buffers t      ; Needed in helm-buffers-list
      helm-buffers-fuzzy-matching t          ; fuzzy matching buffer names when non--nil
                                           ; useful in helm-mini that lists buffers
-     )
+    )
  
+    (set-face-attribute 'helm-selection nil
+                        :background "deepskyblue4"
+			:foreground "white")
+
     ;; Save current position to mark ring when jumping to a different place
     (add-hook 'helm-goto-line-before-hook 'helm-save-current-pos-to-mark-ring)
    
@@ -699,4 +708,5 @@
     (use-package yasnippet
       :ensure t)
     (yas-global-mode 1)
+    (setq yas-snippet-dirs '("/.emacs.d/snippets"))
     #+END_SRC

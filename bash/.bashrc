@@ -11,6 +11,7 @@ export PROMPT_DIR_COLOR="$(tput bold)$(tput setaf 9)"
 export PROMPT_GIT_STATUS_COLOR="$(tput bold)$(tput setaf 2)"
 export PROMPT_USER_COLOR="$(tput bold)$(tput setaf 12)"
 export TERM=xterm-256color
+export WORKON_HOME="/Users/gmcclure/Etc/Virtualenvs/"
 
 ### #aliases
 alias be="bundle exec"
@@ -48,7 +49,7 @@ fi
 
 # Enable global pip3 functionality
 gpip() {
-    PIP_REQUIRE_VIRTUALENV="" pip3 "$@"
+    PIP_REQUIRE_VIRTUALENV=false pip3 "$@"
 }
 
 source /usr/local/etc/profile.d/z.sh
