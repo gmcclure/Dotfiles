@@ -36,8 +36,8 @@
     #+BEGIN_SRC emacs-lisp
     ;; Frame position
     (add-to-list 'default-frame-alist '(width . 127))
-    (add-to-list 'default-frame-alist '(height . 36))
-    (set-frame-position (selected-frame) 131 52)
+    (add-to-list 'default-frame-alist '(height . 50))
+    (set-frame-position (selected-frame) 1100 650)
 
     (setq inhibit-splash-screen t)
     (setq initial-scratch-message "")
@@ -60,8 +60,8 @@
 *** Typeface
     #+BEGIN_SRC emacs-lisp
     (when (eq system-type 'darwin)
-      (set-default-font "-*-Space Mono for Powerline-normal-normal-normal-*-18-*-*-*-m-0-iso10646-1"))
-      ;(set-default-font "-*-monofur for Powerline-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1"))
+      ;(set-default-font "-*-Space Mono for Powerline-normal-normal-normal-*-18-*-*-*-m-0-iso10646-1"))
+      (set-default-font "-*-monofur for Powerline-normal-normal-normal-*-22-*-*-*-m-0-iso10646-1"))
     (set-face-attribute 'variable-pitch nil :family "Baskerville")
     #+END_SRC
 
@@ -246,16 +246,11 @@
         "http://feeds.feedburner.com/CookieAndKate"
         "http://withfoodandlove.com/feed/"
         "http://feeds.seriouseats.com/seriouseatsfeaturesvideos"
-        "http://feeds.feedburner.com/smittenkitchen"
         "http://www.greenkitchenstories.com/feed/"
-        "http://feeds.feedburner.com/apartmenttherapy/thekitchn"
         "http://feeds.feedburner.com/MinimalistBaker"
         "http://feeds.feedburner.com/NaturallyElla"
         "http://feeds.feedburner.com/CoolTools"
         "http://feeds.feedburner.com/nofilmschool/"
-        "http://www.boston.com/bigpicture/index.xml"
-        "http://blog.makezine.com/index.xml"
-        "http://news.ycombinator.com/rss"
         "http://love-python.blogspot.com/feeds/posts/default"
         "http://feeds.feedburner.com/CssTricks"
         "http://feeds.feedburner.com/Bludice"
@@ -279,22 +274,17 @@
         "http://feeds.feedburner.com/penaddict/XQKI"
         "http://therecordingrevolution.com/feed/"
         "http://www.soundonsound.com/news/sosrssfeed.php"
-        "http://blog.456recordings.com/feed/"
         "http://www.gearjunkies.com/feed/"
         "http://www.factmag.com/feed/"
         "https://feedity.com/musicradar-com/VFtaWlJW.rss"
-        "http://feeds.feedburner.com/EffectsBay"
-        "http://feeds.feedburner.com/Musicians-Friend-Stupid-Deal"
         "http://www.theguitarjournal.com/feed/"
         "http://www.premierguitar.com/rss/Magazine.aspx"
         "http://www.carryology.com/feed/"
         "http://xkcd.com/rss.xml"
         "http://www.laist.com/index.rdf"
         "http://feeds.feedburner.com/thesartorialist"
-        "http://winkbooks.tumblr.com/rss"
-        "http://feeds.feedburner.com/nybooks"
-        "http://tetw.tumblr.com/rss"
-        "http://feeds.nytimes.com/nyt/rss/Books"))
+	"http://feedpress.me/wink"
+        "http://tetw.tumblr.com/rss"))
 
 ;    (use-package elfeed-org
 ;      :ensure t
@@ -305,6 +295,7 @@
 
 *** Exec-Path-From-Shell
     #+BEGIN_SRC emacs-lisp
+    ;; Get environment variables such as $PATH from the shell
     (use-package exec-path-from-shell
       :ensure t
       :config
@@ -529,17 +520,6 @@
       '("mac pdf" . msg-to-pdf) t)
     #+END_SRC
 
-*** Multiple-Cursors
-    #+BEGIN_SRC emacs-lisp
-    (use-package multiple-cursors
-      :ensure t
-      :bind
-      ("C-S-c C-S-c" . mc/edit-lines)
-      ("C->" . mc/mark-next-like-this)
-      ("C-<" . mc/mark-previous-like-this)
-      ("C-c C-<" . mc/mark-all-like-this))
-    #+END_SRC
-
 *** Org
     #+BEGIN_SRC emacs-lisp
     (require 'org-install)
@@ -637,9 +617,13 @@
 
 *** Projectile
     #+BEGIN_SRC emacs-lisp
-    (projectile-global-mode)
-    (setq projectile-completion-system 'helm)
-    (helm-projectile-on)
+    (use-package projectile
+      :ensure t
+      :config
+      (projectile-global-mode)
+      (setq projectile-completion-system 'helm)
+      (helm-projectile-on)
+      (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
     #+END_SRC
 
 *** PDF-Tools
