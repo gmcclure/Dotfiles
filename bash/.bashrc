@@ -20,9 +20,10 @@ alias edit="$EDITOR"
 alias gpm="git push -u origin master"
 alias gst="git status"
 alias less='less -R'
-alias ls='exa -x'
-alias l='exa -al'
-alias ll='exa -l'
+alias ls='ls -Gx'
+alias l='ls -Gal'
+alias ll='ls -Gl'
+alias lt='ls -Galt'
 alias mkdir='mkdir -p'
 alias tree='tree -C'
 alias vimbash='edit ~/.bashrc'
@@ -54,7 +55,7 @@ gpip() {
 
 source /usr/local/etc/profile.d/z.sh
 
-# eval "$(direnv hook bash)"
+eval "$(direnv hook bash)"
 eval "$(rbenv init -)"
 
 export NVM_DIR="$HOME/.nvm"
