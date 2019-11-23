@@ -57,7 +57,7 @@ Plug 'wincent/terminus'
 Plug 'hrother/offlineimaprc.vim'
 Plug 'tpope/vim-liquid'
 Plug 'mattn/emmet-vim'
-Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+Plug 'vimwiki/vimwiki'
 Plug '~/.vim/local'
 
 call plug#end()
@@ -376,6 +376,9 @@ let g:airline#extensions#tabline#enabled = 1
 " togglecursor
 let g:togglecursor_default = 'block'
 let g:togglecursor_leave = 'underline'
+
+" vimwiki
+let g:vimwiki_list = [{ 'path': '~/Etc/McWiki/', 'path_html': '~/Etc/McWikiSite/'  }]
 
 " }}}
 
