@@ -12,6 +12,7 @@ export PROMPT_GIT_STATUS_COLOR="$(tput bold)$(tput setaf 2)"
 export PROMPT_USER_COLOR="$(tput bold)$(tput setaf 12)"
 export TERM=xterm-256color
 export WORKON_HOME="/Users/gmcclure/Etc/Virtualenvs/"
+export PROJECT_HOME="/Users/gmcclure/Src/"
 
 ### #aliases
 alias be="bundle exec"
@@ -52,6 +53,14 @@ fi
 gpip() {
     PIP_REQUIRE_VIRTUALENV=false pip3 "$@"
 }
+
+# Enable pyenv
+export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+# Enable virtualenvwrapper
+source /usr/local/bin/virtualenvwrapper.sh
 
 source /usr/local/etc/profile.d/z.sh
 
