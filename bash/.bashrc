@@ -49,11 +49,6 @@ fi
 
 #### special functions
 
-# Enable global pip3 functionality
-gpip() {
-    PIP_REQUIRE_VIRTUALENV=false pip3 "$@"
-}
-
 # Enable pyenv
 export PATH="$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
