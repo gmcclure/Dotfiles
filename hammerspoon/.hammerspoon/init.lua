@@ -7,7 +7,8 @@ function winXYMove(x, y)
 
       f.x = f.x + x
       f.y = f.y + y
-      win:setFrame(f, 0)
+      -- 0.2 second animation duration
+      win:setFrame(f, 0.2)
    end
 end
 
