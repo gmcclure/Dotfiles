@@ -58,6 +58,9 @@ Plug 'hrother/offlineimaprc.vim'
 Plug 'tpope/vim-liquid'
 Plug 'mattn/emmet-vim'
 Plug 'vimwiki/vimwiki'
+Plug 'glench/vim-jinja2-syntax'
+Plug 'digitaltoad/vim-pug'
+Plug 'jbgutierrez/vim-babel'
 Plug '~/.vim/local'
 
 call plug#end()
@@ -132,8 +135,9 @@ colo space-vim-dark
 
 " Set font
 " set gfn=Source\ Code\ Pro\ for\ Powerline:h18
-set gfn=monofur\ for\ Powerline:h23
+" set gfn=monofur\ for\ Powerline:h23
 " set gfn=Fira\ Mono\ for\ Powerline:h18
+set gfn=APL385\ Unicode:h21
 
 " }}}
 
@@ -378,6 +382,7 @@ let g:togglecursor_default = 'block'
 let g:togglecursor_leave = 'underline'
 
 " vimwiki
+let g:vimwiki_folding = 'list'
 let g:vimwiki_list = [{ 'path': '~/Etc/McWiki/', 'path_html': '~/Etc/McWikiSite/'  }]
 
 " }}}
