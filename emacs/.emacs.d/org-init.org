@@ -37,12 +37,14 @@
     ;; Frame position
     (add-to-list 'default-frame-alist '(width . 127))
     (add-to-list 'default-frame-alist '(height . 50))
+    (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
     (set-frame-position (selected-frame) 1100 650)
 
     (setq inhibit-splash-screen t)
     (setq initial-scratch-message "")
     (setq initial-major-mode 'org-mode)
     (setq-default major-mode 'org-mode)
+
 
     (blink-cursor-mode -1)
     (menu-bar-mode -1)
@@ -60,9 +62,9 @@
 *** Typeface
     #+BEGIN_SRC emacs-lisp
     (when (eq system-type 'darwin)
-      (set-default-font "-*-Andale Mono-normal-normal-normal-*-21-*-*-*-m-0-iso10646-1"))
-      ;(set-default-font "-*-Space Mono for Powerline-normal-normal-normal-*-18-*-*-*-m-0-iso10646-1"))
-      ;(set-default-font "-*-monofur for Powerline-normal-normal-normal-*-22-*-*-*-m-0-iso10646-1"))
+      (if (<= (display-pixel-width) 1680)
+          (set-default-font "-*-APL385 Unicode-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1")
+	(set-default-font "-*-APL385 Unicode-normal-normal-normal-*-22-*-*-*-m-0-iso10646-1")))
     (set-face-attribute 'variable-pitch nil :family "Baskerville")
     #+END_SRC
 
@@ -524,8 +526,9 @@
 *** Org
     #+BEGIN_SRC emacs-lisp
     (require 'org-install)
- 
     (require 'org-bullets)
+    (require 'org-journal)
+
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
     (setq org-ellipsis "⤵")
  
@@ -547,8 +550,8 @@
     (setq org-default-notes-file "~/Google Drive/Org/notes.org")
     (global-set-key (kbd "C-c o")
  		   (lambda () (interactive) (find-file "~/Google Drive/Org/life.org")))
- 
-    (require 'org-journal)
+
+    ;; Org Journal
     (setq org-journal-dir "~/Google Drive/Journal")
 
     (setq org-clock-persist 'history)
@@ -588,19 +591,6 @@
     (setq org-catch-invisible-edits 'show-and-error)
 
     (setq org-cycle-separator-lines 0)
-    #+END_SRC
-
-*** Org-Drill
-    #+BEGIN_SRC emacs-lisp
-    (add-to-list 'load-path "~/Etc/Lib/org-mode/contrib/lisp/")
-    (use-package org-drill
-      :config (progn
-                (add-to-list 'org-modules 'org-drill)
-		(setq org-drill-add-random-noise-to-intervals-p t)
-		(setq org-drill-hint-separator "||")
-		(setq org-drill-left-cloze-delimiter "<|")
-		(setq org-drill-right-cloze-delimiter "|>")
-		(setq org-drill-learn-fraction 0.25)))
     #+END_SRC
 
 *** Page Break Lines
