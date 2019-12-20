@@ -214,6 +214,15 @@
       (setq avy-background t))
     #+END_SRC
 
+*** Calfw
+    #+BEGIN_SRC emacs-lisp
+    (require 'calfw)
+    (require 'calfw-ical)
+    (defun gmc:open-gmc-calendar ()
+      (interactive)
+      (cfw:open-ical-calendar "https://calendar.google.com/calendar/ical/gmcclure%40gmail.com/public/basic.ics"))
+    (global-set-key (kbd "<f12>") 'gmc:open-gmc-calendar)
+    #+END_SRC
 *** Deft
     #+BEGIN_SRC emacs-lisp
     ;; Deft
