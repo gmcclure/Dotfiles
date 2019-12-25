@@ -137,7 +137,8 @@ colo space-vim-dark
 " set gfn=Source\ Code\ Pro\ for\ Powerline:h18
 " set gfn=monofur\ for\ Powerline:h23
 " set gfn=Fira\ Mono\ for\ Powerline:h18
-set gfn=APL385\ Unicode:h21
+" set gfn=APL385\ Unicode:h21
+set gfn=Hack:h20
 
 " }}}
 
