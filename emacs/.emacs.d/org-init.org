@@ -1,4 +1,5 @@
 #+TITLE: GMac's Emacs
+#+DATE: <2019-12-25 Wed 11:35>
 #+STARTUP: content
 
 * GMac's Emacs
@@ -9,14 +10,36 @@
     ;(setq debug-on-error t)
     ;(setq debug-on-quit t)
     #+END_SRC
+*** Prep
+**** Garbage Collection
+***** Defer garbage collection
+      * The GC eats up quite a bit of time, easily doubling startup
+	time. The trick is to turn up the memory threshold as early as
+	possible.
+       #+BEGIN_SRC emacs-lisp
+       (setq gc-cons-threshold 100000000)
+       #+END_SRC
+***** Set gc-cons-threshold smaller for interactive use
+      #+BEGIN_SRC emacs-lisp
+	(defvar better-gc-cons-threshold 67108864 ; 64mb
+	  "The default value to use for `gc-cons-threshold'.
+	  Freezing? Decrease this. Stuttering? Increase.")
+	(add-hook 'emacs-startup-hook
+		  (lambda ()
+		    (setq gc-cons-threshold better-gc-cons-threshold)))
+      #+END_SRC
+**** Diminish
+     #+BEGIN_SRC emacs-lisp
+     (use-package diminish)
+     #+END_SRC
 
 *** Environment Variables
     #+BEGIN_SRC emacs-lisp
-    ;; Necessary to set this for epdinfo rebuild
-    (setenv "PKG_CONFIG_PATH"
-      "/usr/local/opt/libffi/lib/pkgconfig")
-    (setenv "WORKON_HOME"
-      "/Users/gmcclure/Etc/Virtualenvs")
+      ;; Necessary to set this for epdinfo rebuild
+      (setenv "PKG_CONFIG_PATH"
+	      "/usr/local/opt/libffi/lib/pkgconfig")
+      (setenv "WORKON_HOME"
+	      "/Users/gmcclure/Etc/Virtualenvs")
     #+END_SRC
 
 *** Personalization
@@ -95,31 +118,32 @@
 
 *** Custom Keys & Functions
     #+BEGIN_SRC emacs-lisp
-    ;; Makes C-k kill an entire line when cursor is at line beginning
-    (setq kill-whole-line t)
+      ;; Makes C-k kill an entire line when cursor is at line beginning
+      (setq kill-whole-line t)
 
-    (defun reload-init-file ()
-      "Reload init.el file"
-      (interactive)
-      (load user-init-file)
-      (message "Reloaded init.el OK."))
-   
-    (defun open-init-file ()
-      (interactive)
-      (find-file "~/.emacs.d/org-init.org"))
+      (defun reload-init-file ()
+	"Reload init.el file"
+	(interactive)
+	(load user-init-file)
+	(message "Reloaded init.el OK."))
 
-    (use-package misc
-      :commands forward-to-word
-      :bind (("M-f" . forward-to-word)))
+      (defun open-init-file ()
+	(interactive)
+	(find-file "~/.emacs.d/org-init.org"))
 
-    (setq mac-option-modifier 'super)
-    (setq mac-command-modifier 'meta)
+      (use-package misc
+	:commands forward-to-word
+	:bind (("M-f" . forward-to-word)))
 
-    (global-set-key "\M-z" 'zap-up-to-char)
-    (global-set-key (kbd "C-(") 'scroll-up-line)
-    (global-set-key (kbd "C-)") 'scroll-down-line)
-    (global-set-key (kbd "C-c 0") 'ansi-term)
-    (global-set-key (kbd "C-c i") 'open-init-file)
+      (setq mac-option-modifier 'super)
+      (setq mac-command-modifier 'meta)
+
+      (global-set-key "\M-z" 'zap-up-to-char)
+      (global-set-key (kbd "C-(") 'scroll-up-line)
+      (global-set-key (kbd "C-)") 'scroll-down-line)
+      (global-set-key (kbd "C-c 0") 'ansi-term)
+      (global-set-key (kbd "C-c i") 'open-init-file)
+      (global-set-key (kbd "C-c n") 'indent-region)
     #+END_SRC
 
 *** Miscellaneous Customizations
@@ -242,7 +266,7 @@
     #+END_SRC
 
 *** Elfeed
-    #+BEGIN_SRC emacs-lisp
+    #+Begin_SRC emacs-lisp
     (use-package elfeed
       :ensure t
       :bind
@@ -314,6 +338,14 @@
       (exec-path-from-shell-initialize))
     #+END_SRC
 
+*** Eyebrowse
+    #+BEGIN_SRC emacs-lisp
+    (use-package eyebrowse
+      :diminish eyebrowse-mode
+      :config
+      (eyebrowse-mode t))
+    #+END_SRC
+
 *** Diary
     #+BEGIN_SRC emacs-lisp
     (setq diary-file "~/Google Drive/Org/Diary")
@@ -345,73 +377,15 @@
     (setq ispell-program-name "/usr/local/bin/aspell")
     #+END_SRC
 
-*** Helm
-    #+BEGIN_SRC emacs-lisp
-    (use-package helm
-    :ensure t
-    :config
-
-    ;; Must set before helm-config
-    (setq helm-command-prefix-key "C-c h")
- 
-    (require 'helm-config)
-    (require 'helm-eshell)
-    (require 'helm-files)
-    (require 'helm-grep)
- 
-    (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
-    (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
-    (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
- 
-    (define-key helm-grep-mode-map (kbd "<return>")  'helm-grep-mode-jump-other-window)
-    (define-key helm-grep-mode-map (kbd "n")  'helm-grep-mode-jump-other-window-forward)
-    (define-key helm-grep-mode-map (kbd "p")  'helm-grep-mode-jump-other-window-backward)
- 
-    (setq
-     helm-google-suggest-use-curl-p t
-     helm-scroll-amount 4 ; scroll 4 lines other window using M-<next>/M-<prior>
-     helm-quick-update t ; do not display invisible candidates
-     helm-idle-delay 0.01 ; be idle for this many seconds, before updating in delayed sources.
-     helm-input-idle-delay 0.01 ; be idle for this many seconds, before updating candidate buffer
-     helm-ff-search-library-in-sexp t ; search for library in `require' and `declare-function' sexp.
- 
-     helm-split-window-default-side 'other ;; open helm buffer in another window
-     helm-split-window-in-side-p t ;; open helm buffer inside current window, not occupy whole other window
-     helm-buffers-favorite-modes (append helm-buffers-favorite-modes
- 					'(picture-mode artist-mode))
-     helm-candidate-number-limit 100 ; limit the number of displayed canidates
-     helm-M-x-requires-pattern 0     ; show all candidates when set to 0
-     helm-boring-file-regexp-list
-     '("\\.git$" "\\.hg$" "\\.svn$" "\\.CVS$" "\\._darcs$" "\\.la$" "\\.o$" "\\.i$") ; do not show these files in helm buffer
-     helm-ff-file-name-history-use-recentf t
-     helm-move-to-line-cycle-in-source t ; move to end or beginning of source
-                                          ; when reaching top or bottom of source.
-     ido-use-virtual-buffers t      ; Needed in helm-buffers-list
-     helm-buffers-fuzzy-matching t          ; fuzzy matching buffer names when non--nil
-                                          ; useful in helm-mini that lists buffers
-    )
- 
-    (set-face-attribute 'helm-selection nil
-                        :background "deepskyblue4"
-			:foreground "white")
-
-    ;; Save current position to mark ring when jumping to a different place
-    (add-hook 'helm-goto-line-before-hook 'helm-save-current-pos-to-mark-ring)
-   
-    (helm-mode 1)
-  
-    :bind
-    ("M-x" . helm-M-x)
-    ;("C-x C-m" . helm-M-x)
-    ("C-;" . helm-M-x)
-    ("C-x b" . helm-mini)
-    ("C-x C-f" . helm-find-files))
-    #+END_SRC
-
 *** Hydra
     #+BEGIN_SRC emacs-lisp
-    (use-package hydra
-      :ensure t)
+      (use-package hydra
+	:ensure t)
+
+      (defhydra hydra-zoom (global-map "<f2>")
+	"zoom"
+	("g" text-scale-increase "in")
+	("l" text-scale-decrease "out"))
     #+END_SRC
 
 *** Hippie-Expand
@@ -419,19 +393,37 @@
     (global-set-key "\M-/" 'hippie-expand)    
     #+END_SRC
 
-*** Ivy (Swiper)
+*** Ivy (Amx, Counsel, Swiper)
     #+BEGIN_SRC emacs-lisp
     (use-package ivy
-      :ensure try
-      :config
+      :diminish
+      :init
+      (use-package amx :defer t)
+      (use-package counsel :diminish :config (counsel-mode 1))
+      (use-package swiper :defer t)
       (ivy-mode 1)
-      (setq ivy-use-virtual-buffers t)
-      (setq enable-recursive-minibuffers t)
-      (setq ivy-count-format "(%d/%d) "))
-
-    (use-package swiper
       :bind
-      ("C-s" . 'swiper))
+      (("C-s" . swiper-isearch)
+       ("C-x b" . 'ivy-switch-buffer)
+       ("C-;" . 'counsel-M-x)
+       (:map ivy-minibuffer-map
+             ("C-r" . ivy-previous-line-or-history)
+             ("M-RET" . ivy-immediate-done))
+       (:map counsel-find-file-map
+         ("C-~" . counsel-goto-local-home)))
+      :custom
+      (ivy-use-virtual-buffers t)
+      (enable-recursive-minibuffers t)
+      (ivy-height 10)
+      (ivy-on-del-error-function nil)
+      (ivy-magic-slash-non-match-action 'ivy-magic-slash-non-match-create)
+      (ivy-count-format "【%d/%d】")
+      (ivy-wrap t)
+      :config
+      (defun counsel-goto-local-home ()
+          "Go to the $HOME of the local machine."
+	  (interactive)
+	(ivy--cd "~/")))
     #+END_SRC
 
 *** Magit
@@ -600,6 +592,9 @@
     (setq org-catch-invisible-edits 'show-and-error)
 
     (setq org-cycle-separator-lines 0)
+
+    ;; Org-babel code block indentation
+    (setq org-src-tab-acts-natively t)
     #+END_SRC
 
 *** Page Break Lines
@@ -641,6 +636,12 @@
     #+BEGIN_SRC emacs-lisp
     (setq inferior-lisp-program "/usr/local/bin/sbcl")
     (setq slime-contribs '(slime-fancy))
+    #+END_SRC
+
+*** Smex
+    #+BEGIN_SRC emacs-lisp
+    (use-package smex
+      :ensure t)
     #+END_SRC
 
 *** Spaceline
