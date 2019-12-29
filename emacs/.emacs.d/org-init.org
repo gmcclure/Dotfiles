@@ -1,14 +1,19 @@
 #+TITLE: GMac's Emacs
-#+DATE: <2019-12-25 Wed 11:35>
+#+DATE: <2019-12-28 Sat 01:18>
 #+STARTUP: content
+
+* Currently Relevant Links
+  - [[https://ladicle.com/post/config/][Ladicle's Emacs Configuration]]
+  - [[https://jamiecollinson.com/blog/my-emacs-config/][Jamie Collinson Emacs Configuration]]
+
 
 * GMac's Emacs
 
 ** General Setup
 *** Debugging
     #+BEGIN_SRC emacs-lisp
-    ;(setq debug-on-error t)
-    ;(setq debug-on-quit t)
+      ;(setq debug-on-error t)
+      ;(setq debug-on-quit t)
     #+END_SRC
 *** Prep
 **** Garbage Collection
@@ -30,7 +35,7 @@
       #+END_SRC
 **** Diminish
      #+BEGIN_SRC emacs-lisp
-     (use-package diminish)
+       (use-package diminish)
      #+END_SRC
 
 *** Environment Variables
@@ -44,76 +49,81 @@
 
 *** Personalization
     #+BEGIN_SRC emacs-lisp
-    (setq user-full-name "Greg McClure")
-    (setq user-email-address "gmcclure@gmail.com")
-    (setq calendar-latitude 33.6510622)
-    (setq calendar-longitude -117.83008960000001)
-    (setq calendar-location-name "Irvine, CA")
+      (setq user-full-name "Greg McClure")
+      (setq user-email-address "gmcclure@gmail.com")
+      (setq calendar-latitude 33.6510622)
+      (setq calendar-longitude -117.83008960000001)
+      (setq calendar-location-name "Irvine, CA")
 
-    (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-    (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
-    (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+      (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+      (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
+      (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
     #+END_SRC
 
 *** Frame & Buffer Setup
     #+BEGIN_SRC emacs-lisp
-    ;; Frame position
-    (add-to-list 'default-frame-alist '(width . 127))
-    (add-to-list 'default-frame-alist '(height . 50))
-    (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
-    (set-frame-position (selected-frame) 1100 650)
+      ;; Frame position
+      (add-to-list 'default-frame-alist '(width . 127))
+      (add-to-list 'default-frame-alist '(height . 50))
+      (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
+      (set-frame-position (selected-frame) 1100 650)
 
-    (setq inhibit-splash-screen t)
-    (setq initial-scratch-message "")
-    (setq initial-major-mode 'org-mode)
-    (setq-default major-mode 'org-mode)
+      (setq inhibit-splash-screen t)
+      (setq initial-scratch-message "")
+      (setq initial-major-mode 'org-mode)
+      (setq-default major-mode 'org-mode)
 
 
-    (blink-cursor-mode -1)
-    (menu-bar-mode -1)
-    (scroll-bar-mode -1)
-    (tool-bar-mode -1)
+      (blink-cursor-mode -1)
+      (menu-bar-mode -1)
+      (scroll-bar-mode -1)
+      (tool-bar-mode -1)
 
-    (add-to-list 'default-frame-alist '(ns-appearance . dark))
+      (add-to-list 'default-frame-alist '(ns-appearance . dark))
     #+END_SRC
 
 *** Theme
     #+BEGIN_SRC emacs-lisp
-    (load-theme 'doom-solarized-dark t)
+      (load-theme 'doom-solarized-dark t)
     #+END_SRC
 
 *** Typeface
     #+BEGIN_SRC emacs-lisp
-    (when (eq system-type 'darwin)
-      (if (<= (display-pixel-width) 1680)
-          (set-default-font "-*-APL385 Unicode-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1")
-	(set-default-font "-*-APL385 Unicode-normal-normal-normal-*-22-*-*-*-m-0-iso10646-1")))
-    (set-face-attribute 'variable-pitch nil :family "Baskerville")
+      (when (eq system-type 'darwin)
+	(if (<= (display-pixel-width) 1680)
+	    (set-default-font "-*-APL385 Unicode-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1")
+	  (set-default-font "-*-APL385 Unicode-normal-normal-normal-*-22-*-*-*-m-0-iso10646-1")))
+      (set-face-attribute 'variable-pitch nil :family "Baskerville")
     #+END_SRC
 
 *** UTF-8
     #+BEGIN_SRC emacs-lisp
-    (setq locale-coding-system 'utf-8)
-    (set-terminal-coding-system 'utf-8-unix)
-    (set-keyboard-coding-system 'utf-8)
-    (set-selection-coding-system 'utf-8)
-    (prefer-coding-system 'utf-8)
-    (when (display-graphic-p)
-       (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
+      (setq locale-coding-system 'utf-8)
+      (set-terminal-coding-system 'utf-8-unix)
+      (set-keyboard-coding-system 'utf-8)
+      (set-selection-coding-system 'utf-8)
+      (prefer-coding-system 'utf-8)
+      (when (display-graphic-p)
+	(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
     #+END_SRC
 
 *** Files & Buffers
     #+BEGIN_SRC emacs-lisp
-    ;;; Files & buffers
-    (ido-mode t)
-    (defalias 'yes-or-no-p 'y-or-n-p)
-    (global-set-key (kbd "C-x C-b") 'ibuffer)
-    (set-default 'truncate-lines t)
+      ;;; Files & buffers
+      (ido-mode t)
+      (defalias 'yes-or-no-p 'y-or-n-p)
+      (global-set-key (kbd "C-x C-b") 'ibuffer)
+      (set-default 'truncate-lines t)
     #+END_SRC
 
 *** Backups
     #+BEGIN_SRC emacs-lisp
-    (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+      (setq backup-directory-alist '(("." . "~/.emacs.d/backups"))
+	    backup-by-copying t
+	    version-control t
+	    delete-old-versions t
+	    kept-new-versions 20
+	    kept-old-versions 5)
     #+END_SRC
 
 *** Custom Keys & Functions
@@ -143,86 +153,98 @@
       (global-set-key (kbd "C-)") 'scroll-down-line)
       (global-set-key (kbd "C-c 0") 'ansi-term)
       (global-set-key (kbd "C-c i") 'open-init-file)
+      (global-set-key (kbd "C-c o")
+		      (lambda () (interactive) (find-file "~/Google Drive/Org/life.org")))
       (global-set-key (kbd "C-c n") 'indent-region)
+
+      ;; Always remove trailing whitespace
+      (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+      ;; Indent org-mode code blocks automagically
+      (defun gmc:code-block-indent ()
+	(interactive)
+	(save-excursion
+	  (org-babel-mark-block)
+	  (indent-region (region-beginning) (region-end))))
+
     #+END_SRC
 
 *** Miscellaneous Customizations
     #+BEGIN_SRC emacs-lisp
-    (use-package clean-aindent-mode
-      :ensure t
-      :config
-      (add-hook 'prog-mode-hook 'clean-aindent-mode))
+      (use-package clean-aindent-mode
+	:ensure t
+	:config
+	(add-hook 'prog-mode-hook 'clean-aindent-mode))
 
-    (use-package volatile-highlights
-      :ensure t
-      :config
-      (volatile-highlights-mode t))
+      (use-package volatile-highlights
+	:ensure t
+	:config
+	(volatile-highlights-mode t))
 
-    ; Flash the modeline for the bell
-    (setq ring-bell-function
-          (lambda ()
-            (let ((orig-fg (face-foreground 'mode-line)))
-              (set-face-foreground 'mode-line "#F2804F")
-              (run-with-idle-timer 0.1 nil
-                                   (lambda (fg) (set-face-foreground 'mode-line fg))
-                                   orig-fg))))
+      ; Flash the modeline for the bell
+      (setq ring-bell-function
+	    (lambda ()
+	      (let ((orig-fg (face-foreground 'mode-line)))
+		(set-face-foreground 'mode-line "#F2804F")
+		(run-with-idle-timer 0.1 nil
+				     (lambda (fg) (set-face-foreground 'mode-line fg))
+				     orig-fg))))
 
-    ; Close term buffer on exit
-    (defadvice term-handle-exit
-      (after term-kill-buffer-on-exit activate)
-      (kill-buffer))
+      ; Close term buffer on exit
+      (defadvice term-handle-exit
+	  (after term-kill-buffer-on-exit activate)
+	(kill-buffer))
     #+END_SRC
 
 *** Autofill
     #+BEGIN_SRC emacs-lisp
-    (add-hook 'text-mode-hook 'turn-on-auto-fill)
+      (add-hook 'text-mode-hook 'turn-on-auto-fill)
     #+END_SRC
 
 ** Mode Customizations
 *** Ace-Window
     #+BEGIN_SRC emacs-lisp
-    (use-package ace-window
-      :ensure t
-      :bind (("M-o" . ace-window))
-      :config
-      (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l)))
+      (use-package ace-window
+	:ensure t
+	:bind (("M-o" . ace-window))
+	:config
+	(setq aw-keys '(?a ?s ?d ?f ?j ?k ?l)))
     #+END_SRC
 
 *** AucTeX
     #+BEGIN_SRC emacs-lisp
-    (let ((my-path (expand-file-name "/Library/TeX/texbin")))
-    (setenv "PATH" (concat my-path ":" (getenv "PATH")))
-    (add-to-list 'exec-path my-path)) 
-    
-    ;; AucTeX settings
+      (let ((my-path (expand-file-name "/Library/TeX/texbin")))
+	(setenv "PATH" (concat my-path ":" (getenv "PATH")))
+	(add-to-list 'exec-path my-path))
 
-    (setq-default TeX-master nil)
-    (setq TeX-parse-self t)
-    (setq TeX-auto-save t)    
-    (setq TeX-PDF-mode t)
-    
-    ;    (add-hook 'LaTeX-mode-hook
-    ;    (lambda ()
-    ;      (push
-    ;       '("latexmk" "latexmk -pdf %s" TeX-run-TeX nil t
-    ;         :help "Run latexmk on file")
-    ;        TeX-command-list)))
-    ;
-    ;    (add-hook 'TeX-mode-hook '(lambda () (setq TeX-command-default "latexmk")))
-    
-    ;    (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
-    ;               #'TeX-revert-document-buffer)
-        
-        ;; to use pdfview with auctex
-    ;    (add-hook 'LaTeX-mode-hook 'pdf-tools-install)
-        
-    ;; to use pdfview with auctex
-    (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-           TeX-source-correlate-start-server t)
-    (setq TeX-view-program-list '(("PDF Tools" "TeX-pdf-tools-sync-view"))
-      Tex-source-correlate-start-server t)
-    (add-hook 'TeX-after-compilation-finished-functions
-      #'TeX-revert-document-buffer)
+      ;; AucTeX settings
+      (setq-default TeX-master nil)
+      (setq TeX-parse-self t)
+      (setq TeX-auto-save t)
+      (setq TeX-PDF-mode t)
+
+      ; (add-hook 'LaTeX-mode-hook
+      ; (lambda ()
+      ;   (push
+      ;    '("latexmk" "latexmk -pdf %s" TeX-run-TeX nil t
+      ;      :help "Run latexmk on file")
+      ;     TeX-command-list)))
+      ;
+      ; (add-hook 'TeX-mode-hook '(lambda () (setq TeX-command-default "latexmk")))
+
+      ; (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
+      ;            #'TeX-revert-document-buffer)
+
+      ;; to use pdfview with auctex
+      ; (add-hook 'LaTeX-mode-hook 'pdf-tools-install)
+
+      ;; to use pdfview with auctex
+      (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+	    TeX-source-correlate-start-server t)
+      (setq TeX-view-program-list '(("PDF Tools" "TeX-pdf-tools-sync-view"))
+	    Tex-source-correlate-start-server t)
+      (add-hook 'TeX-after-compilation-finished-functions
+		#'TeX-revert-document-buffer)
     #+END_SRC
 
 *** Avy
@@ -240,102 +262,104 @@
 
 *** Calfw
     #+BEGIN_SRC emacs-lisp
-    (require 'calfw)
-    (require 'calfw-ical)
-    (defun gmc:open-gmc-calendar ()
-      (interactive)
-      (cfw:open-ical-calendar "https://calendar.google.com/calendar/ical/gmcclure%40gmail.com/public/basic.ics"))
-    (global-set-key (kbd "<f12>") 'gmc:open-gmc-calendar)
+      (require 'calfw)
+      (require 'calfw-ical)
+      (defun gmc:open-gmc-calendar ()
+	(interactive)
+	(cfw:open-ical-calendar "https://calendar.google.com/calendar/ical/gmcclure%40gmail.com/public/basic.ics"))
+      (global-set-key (kbd "<f12>") 'gmc:open-gmc-calendar)
     #+END_SRC
 *** Deft
     #+BEGIN_SRC emacs-lisp
-    ;; Deft
-    ;; Quick, plain-text notes in Emacs
-    ;; https://github.com/jrblevin/deft
-    (use-package deft
-      :ensure t
-      :config
-      (setq deft-directory "~/Google Drive/Notes")
-      (setq deft-extension '("org" "txt"))
-      (setq deft-text-mode 'org-mode)
-      (setq deft-use-filename-as-title t)
-      (setq deft-use-filter-string-for-filename t)
-      (setq deft-auto-save-interval 0)
-      :bind
-      ("C-c d" . deft))
+      ;; Deft
+      ;; Quick, plain-text notes in Emacs
+      ;; https://github.com/jrblevin/deft
+      (use-package deft
+	:ensure t
+	:config
+	(setq deft-directory "~/Google Drive/Notes")
+	(setq deft-extension '("org" "txt"))
+	(setq deft-text-mode 'org-mode)
+	(setq deft-use-filename-as-title t)
+	(setq deft-use-filter-string-for-filename t)
+	(setq deft-auto-save-interval 0)
+	:bind
+	("C-c d" . deft))
     #+END_SRC
 
 *** Elfeed
-    #+Begin_SRC emacs-lisp
-    (use-package elfeed
-      :ensure t
-      :bind
-      ("C-x w" . 'elfeed))
+    #+BEGIN_SRC emacs-lisp
+      (use-package elfeed
+	:ensure t
+	:bind
+	("C-x w" . 'elfeed))
 
-    (setq elfeed-feeds
-      '("https://news.ycombinator.com/rss"
-        "https://lobste.rs/rss"
-        "http://feeds.feedburner.com/brainpickings/rss"
-        "http://feeds.feedburner.com/OpenCulture"
-        "http://feeds.feedburner.com/universetoday/pYdq"
-        "http://feeds.101cookbooks.com/101cookbooks"
-        "http://feeds.feedburner.com/CookieAndKate"
-        "http://withfoodandlove.com/feed/"
-        "http://feeds.seriouseats.com/seriouseatsfeaturesvideos"
-        "http://www.greenkitchenstories.com/feed/"
-        "http://feeds.feedburner.com/MinimalistBaker"
-        "http://feeds.feedburner.com/NaturallyElla"
-        "http://feeds.feedburner.com/CoolTools"
-        "http://feeds.feedburner.com/nofilmschool/"
-        "http://love-python.blogspot.com/feeds/posts/default"
-        "http://feeds.feedburner.com/CssTricks"
-        "http://feeds.feedburner.com/Bludice"
-        "http://www.raywenderlich.com/category/swift/feed"
-        "https://www.hackingwithswift.com/articles/rss"
-        "http://feeds.feedburner.com/Catswhocode"
-        "http://www.techiedelight.com/feed/"
-        "http://feeds.feedburner.com/catonmat"
-        "http://programmingpraxis.com/feed/"
-        "http://feeds.feedburner.com/filmmakeriq"
-        "http://osxdaily.com/feed/"
-        "http://feeds.feedburner.com/Noupe"
-        "http://feeds.feedburner.com/design-milk"
-        "http://feeds.feedburner.com/weburbanist"
-        "http://feeds.feedburner.com/colossal"
-        "http://rss1.smashingmagazine.com/feed/"
-        "http://penpaperpencil.net/rss"
-        "http://www.pencilrevolution.com/feed/"
-        "http://feeds.feedburner.com/NotebookStories"
-        "http://wellappointeddesk.com/feed/"
-        "http://feeds.feedburner.com/penaddict/XQKI"
-        "http://therecordingrevolution.com/feed/"
-        "http://www.soundonsound.com/news/sosrssfeed.php"
-        "http://www.gearjunkies.com/feed/"
-        "http://www.factmag.com/feed/"
-        "https://feedity.com/musicradar-com/VFtaWlJW.rss"
-        "http://www.theguitarjournal.com/feed/"
-        "http://www.premierguitar.com/rss/Magazine.aspx"
-        "http://www.carryology.com/feed/"
-        "http://xkcd.com/rss.xml"
-        "http://www.laist.com/index.rdf"
-        "http://feeds.feedburner.com/thesartorialist"
-	"http://feedpress.me/wink"
-        "http://tetw.tumblr.com/rss"))
-
-;    (use-package elfeed-org
-;      :ensure t
-;      :config
-;      (elfeed-org)
-;      (setq rmh-elfeed-org-files (list "~/Google Drive/Org/elfeed.org")))
+      (setq elfeed-feeds
+	    '("https://news.ycombinator.com/rss"
+	      "https://lobste.rs/rss"
+	      "http://feeds.feedburner.com/brainpickings/rss"
+	      "http://feeds.feedburner.com/OpenCulture"
+	      "http://feeds.feedburner.com/universetoday/pYdq"
+	      "http://feeds.101cookbooks.com/101cookbooks"
+	      "http://feeds.feedburner.com/CookieAndKate"
+	      "http://withfoodandlove.com/feed/"
+	      "http://feeds.seriouseats.com/seriouseatsfeaturesvideos"
+	      "http://www.greenkitchenstories.com/feed/"
+	      "http://feeds.feedburner.com/MinimalistBaker"
+	      "http://feeds.feedburner.com/NaturallyElla"
+	      "http://feeds.feedburner.com/CoolTools"
+	      "http://feeds.feedburner.com/nofilmschool/"
+	      "http://love-python.blogspot.com/feeds/posts/default"
+	      "http://feeds.feedburner.com/CssTricks"
+	      "http://feeds.feedburner.com/Bludice"
+	      "http://www.raywenderlich.com/category/swift/feed"
+	      "https://www.hackingwithswift.com/articles/rss"
+	      "http://feeds.feedburner.com/Catswhocode"
+	      "http://www.techiedelight.com/feed/"
+	      "http://feeds.feedburner.com/catonmat"
+	      "http://programmingpraxis.com/feed/"
+	      "http://feeds.feedburner.com/filmmakeriq"
+	      "http://osxdaily.com/feed/"
+	      "http://feeds.feedburner.com/Noupe"
+	      "http://feeds.feedburner.com/design-milk"
+	      "http://feeds.feedburner.com/weburbanist"
+	      "http://feeds.feedburner.com/colossal"
+	      "http://rss1.smashingmagazine.com/feed/"
+	      "http://penpaperpencil.net/rss"
+	      "http://www.pencilrevolution.com/feed/"
+	      "http://feeds.feedburner.com/NotebookStories"
+	      "http://wellappointeddesk.com/feed/"
+	      "http://feeds.feedburner.com/penaddict/XQKI"
+	      "http://therecordingrevolution.com/feed/"
+	      "http://www.soundonsound.com/news/sosrssfeed.php"
+	      "http://www.gearjunkies.com/feed/"
+	      "http://www.factmag.com/feed/"
+	      "https://feedity.com/musicradar-com/VFtaWlJW.rss"
+	      "http://www.theguitarjournal.com/feed/"
+	      "http://www.premierguitar.com/rss/Magazine.aspx"
+	      "http://www.carryology.com/feed/"
+	      "http://xkcd.com/rss.xml"
+	      "http://www.laist.com/index.rdf"
+	      "http://feeds.feedburner.com/thesartorialist"
+	      "http://feedpress.me/wink"
+	      "http://tetw.tumblr.com/rss"
+	      "https://www.reddit.com/r/emacs.rss"))
     #+END_SRC
 
 *** Exec-Path-From-Shell
     #+BEGIN_SRC emacs-lisp
-    ;; Get environment variables such as $PATH from the shell
-    (use-package exec-path-from-shell
-      :ensure t
-      :config
-      (exec-path-from-shell-initialize))
+      ;; Get environment variables such as $PATH from the shell
+      (use-package exec-path-from-shell
+	:ensure t
+	:config
+	(exec-path-from-shell-initialize))
+    #+END_SRC
+
+*** Expand-Region
+    #+BEGIN_SRC emacs-lisp
+      (use-package expand-region
+	:ensure t
+	:bind ("C-=" . er/expand-region))
     #+END_SRC
 
 *** Eyebrowse
@@ -348,7 +372,7 @@
 
 *** Diary
     #+BEGIN_SRC emacs-lisp
-    (setq diary-file "~/Google Drive/Org/Diary")
+      (setq diary-file "~/Dropbox/App")
     #+END_SRC
 
 *** Dired
@@ -363,14 +387,38 @@
     (setq-default dired-omit-files-p t) ; Buffer local variable
     (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
     #+END_SRC
-    
+
 *** Elpy
     #+BEGIN_SRC emacs-lisp
-    (when (require 'elpy nil t)
-      (elpy-enable))
-    (setq elpy-shell-echo-output nil
-          python-shell-interpreter "ipython"
-          python-shell-interpreter-args "--simple-prompt -c exec('__import__(\\'readline\\')') -i")
+      (when (require 'elpy nil t)
+	(elpy-enable))
+      (setq elpy-shell-echo-output nil
+	    python-shell-interpreter "ipython"
+	    python-shell-interpreter-args "--simple-prompt -c exec('__import__(\\'readline\\')') -i")
+
+      (setq prettify-symbols-unprettify-at-point 'right-edge)
+      (global-prettify-symbols-mode 0)
+
+      (add-hook
+       'python-mode-hook
+       (lambda ()
+	 (mapc (lambda (pair) (push pair prettify-symbols-alist))
+	       '(("def" . "𝒇")
+		 ("class" . "𝑪")
+		 ("and" . "∧")
+		 ("or" . "∨")
+		 ("not" . "￢")
+		 ("in" . "∈")
+		 ("not in" . "∉")
+		 ("return" . "⟼")
+		 ("yield" . "⟻")
+		 ("for" . "∀")
+		 ("!=" . "≠")
+		 ("==" . "＝")
+		 (">=" . "≥")
+		 ("<=" . "≤")
+		 ("[]" . "⃞")
+		 ("=" . "≝")))))
     #+END_SRC
 *** Flyspell
     #+BEGIN_SRC emacs-lisp
@@ -390,45 +438,46 @@
 
 *** Hippie-Expand
     #+BEGIN_SRC emacs-lisp
-    (global-set-key "\M-/" 'hippie-expand)    
+      (global-set-key "\M-/" 'hippie-expand)
     #+END_SRC
 
 *** Ivy (Amx, Counsel, Swiper)
     #+BEGIN_SRC emacs-lisp
-    (use-package ivy
-      :diminish
-      :init
-      (use-package amx :defer t)
-      (use-package counsel :diminish :config (counsel-mode 1))
-      (use-package swiper :defer t)
-      (ivy-mode 1)
-      :bind
-      (("C-s" . swiper-isearch)
-       ("C-x b" . 'ivy-switch-buffer)
-       ("C-;" . 'counsel-M-x)
-       (:map ivy-minibuffer-map
-             ("C-r" . ivy-previous-line-or-history)
-             ("M-RET" . ivy-immediate-done))
-       (:map counsel-find-file-map
-         ("C-~" . counsel-goto-local-home)))
-      :custom
-      (ivy-use-virtual-buffers t)
-      (enable-recursive-minibuffers t)
-      (ivy-height 10)
-      (ivy-on-del-error-function nil)
-      (ivy-magic-slash-non-match-action 'ivy-magic-slash-non-match-create)
-      (ivy-count-format "【%d/%d】")
-      (ivy-wrap t)
-      :config
-      (defun counsel-goto-local-home ()
-          "Go to the $HOME of the local machine."
+      (use-package ivy
+	:diminish
+	:init
+	(use-package amx :defer t)
+	(use-package counsel :diminish :config (counsel-mode 1))
+	(use-package swiper :defer t)
+	(ivy-mode 1)
+	:bind
+	(("C-s" . swiper-isearch)
+	 ("M-s r" . ivy-resume)
+	 ("C-x b" . 'ivy-switch-buffer)
+	 ("C-;" . 'counsel-M-x)
+	 (:map ivy-minibuffer-map
+	       ("C-r" . ivy-previous-line-or-history)
+	       ("M-RET" . ivy-immediate-done))
+	 (:map counsel-find-file-map
+	       ("C-~" . counsel-goto-local-home)))
+	:custom
+	(ivy-use-virtual-buffers t)
+	(enable-recursive-minibuffers t)
+	(ivy-height 10)
+	(ivy-on-del-error-function nil)
+	(ivy-magic-slash-non-match-action 'ivy-magic-slash-non-match-create)
+	(ivy-count-format "【%d/%d】")
+	(ivy-wrap t)
+	:config
+	(defun counsel-goto-local-home ()
+	  "Go to the $HOME of the local machine."
 	  (interactive)
-	(ivy--cd "~/")))
+	  (ivy--cd "~/")))
     #+END_SRC
 
 *** Magit
     #+BEGIN_SRC emacs-lisp
-    (global-set-key (kbd "C-x g") 'magit-status)
+      (global-set-key (kbd "C-x g") 'magit-status)
     #+END_SRC
 
 *** COMMENT Mu4e
@@ -439,7 +488,7 @@
     (require 'mu4e)
     (require 'org-mu4e)
     (global-set-key (kbd "C-c m") 'mu4e)
-    
+
     (setq mail-user-agent 'mu4e-user-agent)
 
     ;; default
@@ -448,13 +497,13 @@
     (setq mu4e-sent-folder   "/[Gmail].Sent Mail")
     (setq mu4e-trash-folder  "/[Gmail].Trash")
     (setq mu4e-refile-folder  "/[Gmail].All Mail")
-    
+
     ;; don't save message to Sent Messages, Gmail/IMAP takes care of this
     (setq mu4e-sent-messages-behavior 'delete)
 
     ;; needed for mbsync
     (setq mu4e-change-filenames-when-moving t)
-    
+
     ;; (See the documentation for `mu4e-sent-messages-behavior' if you have
     ;; additional non-Gmail addresses and want assign them different
     ;; behavior.)
@@ -472,13 +521,13 @@
     ;; you can quickly switch to your Inbox -- press ``ji''
     ;; then, when you want archive some messages, move them to
     ;; the 'All Mail' folder by pressing ``ma''.
-    
+
     (setq mu4e-maildir-shortcuts
         '(("/INBOX"               . ?i)
     	  ("/[Gmail].Sent Mail"   . ?s)
     	  ("/[Gmail].Trash"       . ?t)
     	  ("/[Gmail].All Mail"    . ?a)))
-    
+
     ;; allow for updating mail using 'U' in the main view:
     (setq mu4e-get-mail-command "mbsync Gmail")
 
@@ -525,131 +574,122 @@
     #+END_SRC
 
 *** Org
-    #+BEGIN_SRC emacs-lisp
-    (require 'org-install)
-    (require 'org-bullets)
-    (require 'org-journal)
+**** Org Options
+     #+BEGIN_SRC emacs-lisp
+       (setq org-special-ctrl-a/e 't)
+       (setq org-src-tab-acts-natively t)
+       (setq org-use-speed-commands t)
+       (setq org-catch-invisible-edits 'show-and-error)
+       (setq org-cycle-separator-lines 0)
+     #+END_SRC
+**** Org Directories
+     #+BEGIN_SRC emacs-lisp
+       (setq org-directory "~/Google Drive/Org")
+       (setq org-mobile-inbox-for-pull "~/Google Drive/mobile-inbox.org")
+       (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+     #+END_SRC
+**** Org Files
+     #+BEGIN_SRC emacs-lisp
+       (setq org-agenda-files
+	     (list "~/Google Drive/Org/journal.org"
+		   "~/Google Drive/Org/life.org"
+		   "~/Google Drive/Org/notes.org"
+		   "~/Google Drive/Org/todos.org"))
+       (setq org-default-notes-file "~/Google Drive/Org/notes.org")
 
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-    (setq org-ellipsis "⤵")
- 
-    (setq org-directory "~/Google Drive/Org")
- 
-    (global-set-key "\C-cl" 'org-store-link)
-    (global-set-key "\C-cc" 'org-capture)
-    (global-set-key "\C-ca" 'org-agenda)
-    (global-set-key "\C-cb" 'org-iswitchb)
- 
-    (setq org-agenda-files 
-      (list
-        "~/Google Drive/Org/journal.org"
-        "~/Google Drive/Org/life.org"
-	"~/Google Drive/Org/notes.org"
-	"~/Google Drive/Org/todos.org"))
+       ;; Org Keys
+       (global-set-key "\C-cl" 'org-store-link)
+       (global-set-key "\C-cc" 'org-capture)
+       (global-set-key "\C-ca" 'org-agenda)
+       (global-set-key "\C-cb" 'org-iswitchb)
 
-    (setq org-log-done 'time)
-    (setq org-default-notes-file "~/Google Drive/Org/notes.org")
-    (global-set-key (kbd "C-c o")
- 		   (lambda () (interactive) (find-file "~/Google Drive/Org/life.org")))
+       ;; Org Notes
+       (setq org-capture-templates
+	     '(("t" "Todo" entry (file+headline "~/Google Drive/Org/todos.org" "TODOs")
+		"* TODO %?\n")
+	       ("j" "Post" entry (file+datetree "~/Google Drive/Org/journal.org")
+		"* %U %^{Title}\n %?")))
 
-    ;; Org Journal
-    (setq org-journal-dir "~/Google Drive/Journal")
+       ;; Org TODOs
+       (setq org-log-done 'note)
+       ;; Save clock history across Emacs sessions
+       (setq org-clock-persist 'history)
+       (org-clock-persistence-insinuate)
 
-    (setq org-clock-persist 'history)
-    (org-clock-persistence-insinuate)
+       ;; Org Journal
+       (require 'org-journal)
+       (setq org-journal-dir "~/Google Drive/Journal")
 
-    (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/Google Drive/Org/todos.org" "TODOs")
-             "* TODO %?\n")
-	("j" "Post" entry (file+datetree "~/Google Drive/Org/journal.org")
-	     "* %U %^{Title}\n %?")))
+       (defun org-force-open-current-window ()
+	 (interactive)
+	 (let ((org-link-frame-setup (quote
+				      ((vm . vm-visit-folder-other-frame)
+				       (vm-imap . vm-visit-imap-folder-other-frame)
+				       (gnus . org-gnus-no-new-news)
+				       (file . find-file)
+				       (wl . wl-other-frame)))
+				     ))
+	   (org-open-at-point)))
 
-    (defun org-force-open-current-window ()
-      (interactive)
-      (let ((org-link-frame-setup (quote
-                                   ((vm . vm-visit-folder-other-frame)
-    			            (vm-imap . vm-visit-imap-folder-other-frame)
-    				    (gnus . org-gnus-no-new-news)
-    				    (file . find-file)
-    				    (wl . wl-other-frame)))
-              ))
-        (org-open-at-point)))
-    
-    ;; Depending on universal argument try opening link
-    (defun org-open-maybe (&optional arg)
-      (interactive "P")
-      (if arg
-          (org-open-at-point)
-        (org-force-open-current-window)))
+       ;; Depending on universal argument try opening link
+       (defun org-open-maybe (&optional arg)
+	 (interactive "P")
+	 (if arg
+	     (org-open-at-point)
+	   (org-force-open-current-window)))
 
-    ;; Redefine file opening without clobbering universal argumnet
-    (define-key org-mode-map "\C-c\C-o" 'org-open-maybe)
+       ;; Redefine file opening without clobbering universal argumnet
+       (define-key org-mode-map "\C-c\C-o" 'org-open-maybe)
 
-    ;; Speed commands
-    (setq org-use-speed-commands t)
-
-    ;; Avoid edits in invisible areas
-    (setq org-catch-invisible-edits 'show-and-error)
-
-    (setq org-cycle-separator-lines 0)
-
-    ;; Org-babel code block indentation
-    (setq org-src-tab-acts-natively t)
-    #+END_SRC
+       ;; Org Bullets
+       (require 'org-bullets)
+       (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+       (setq org-ellipsis "⤵")
+     #+END_SRC
 
 *** Page Break Lines
      #+BEGIN_SRC emacs-lisp
-     (use-package page-break-lines)
+       (use-package page-break-lines)
      #+END_SRC
 
 *** PowerThesaurus
-     #+BEGIN_SRC emacs-lisp
-    (use-package powerthesaurus
-      :ensure t
-      :bind
-      ("M-p" . 'powerthesaurus-lookup-word-at-point))
-     #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (use-package powerthesaurus
+	:ensure t
+	:bind
+	("M-p" . 'powerthesaurus-lookup-word-at-point))
+    #+END_SRC
 
 *** Projectile
     #+BEGIN_SRC emacs-lisp
-    (use-package projectile
-      :ensure t
-      :config
-      (projectile-global-mode)
-      (setq projectile-completion-system 'helm)
-      (helm-projectile-on)
-      (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+      (use-package projectile
+	:ensure t
+	:config
+	(projectile-global-mode)
+	(setq projectile-completion-system 'helm)
+	(helm-projectile-on)
+	(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
     #+END_SRC
 
 *** PDF-Tools
     #+BEGIN_SRC emacs-lisp
-    (use-package pdf-tools
-      :ensure t
-      :config
-      (custom-set-variables
-        '(pdf-tools-handle-upgrades nil)) ; Use brew upgrade pdf-tools instead.
-      (setq pdf-info-epdfinfo-program "/usr/local/bin/epdfinfo"))
-    (pdf-tools-install)
+      (use-package pdf-tools
+	:ensure t
+	:config
+	(custom-set-variables
+	 '(pdf-tools-handle-upgrades nil)) ; Use brew upgrade pdf-tools instead.
+	(setq pdf-info-epdfinfo-program "/usr/local/bin/epdfinfo"))
+      (pdf-tools-install)
     #+END_SRC
 
 *** Slime
     #+BEGIN_SRC emacs-lisp
-    (setq inferior-lisp-program "/usr/local/bin/sbcl")
-    (setq slime-contribs '(slime-fancy))
-    #+END_SRC
-
-*** Smex
-    #+BEGIN_SRC emacs-lisp
-    (use-package smex
-      :ensure t)
+      (setq inferior-lisp-program "/usr/local/bin/sbcl")
+      (setq slime-contribs '(slime-fancy))
     #+END_SRC
 
 *** Spaceline
     #+BEGIN_SRC emacs-lisp
-      ; The ns-use-srgb-colorspace setting makes spaceline colors
-      ; consistent, but it also dulls the colors of the theme.
-      ;(setq ns-use-srgb-colorspace nil)
-
       (use-package spaceline
 	:ensure t
 	:config
@@ -658,40 +698,50 @@
 	(powerline-reset))
     #+END_SRC
 
+*** Undo Tree
+    #+BEGIN_SRC emacs-lisp
+      (use-package undo-tree
+	:ensure t
+	:diminish t
+	:config
+	(global-undo-tree-mode 1))
+    #+END_SRC
+
 *** Web-Mode
     #+BEGIN_SRC emacs-lisp
-    (use-package web-mode
-      :ensure t
-      :init
-      (setq web-mode-markup-indent-offset 2)
-      (setq web-mode-code-indent-offset 2)
-      (setq web-mode-css-indent-offset 2)
+      (use-package web-mode
+	:ensure t
+	:init
+	(setq web-mode-markup-indent-offset 2)
+	(setq web-mode-code-indent-offset 2)
+	(setq web-mode-css-indent-offset 2)
 
-      (setq web-mode-enable-auto-pairing t)
-      (setq web-mode-enable-auto-expanding t)
-      (setq web-mode-enable-css-colorization t)
-      :mode
-      (("\\.phtml\\'" . web-mode)
-       ("\\.tpl\\.php\\'" . web-mode)
-       ("\\.[agj]sp\\'" . web-mode)
-       ("\\.as[cp]x\\'" . web-mode)
-       ("\\.erb\\'" . web-mode)
-       ("\\.mustache\\'" . web-mode)
-       ("\\.djhtml\\'" . web-mode)))
+	(setq web-mode-enable-auto-pairing t)
+	(setq web-mode-enable-auto-expanding t)
+	(setq web-mode-enable-css-colorization t)
+	:mode
+	(("\\.phtml\\'" . web-mode)
+	 ("\\.tpl\\.php\\'" . web-mode)
+	 ("\\.[agj]sp\\'" . web-mode)
+	 ("\\.as[cp]x\\'" . web-mode)
+	 ("\\.erb\\'" . web-mode)
+	 ("\\.mustache\\'" . web-mode)
+	 ("\\.djhtml\\'" . web-mode)))
     #+END_SRC
 
 *** Which-Key
     #+BEGIN_SRC emacs-lisp
-    (use-package which-key
-      :ensure t
-      :config
-      (which-key-mode 1))
+      (use-package which-key
+	:ensure t
+	:diminish which-key-mode
+	:config
+	(which-key-mode 1))
     #+END_SRC
 
 *** YASnippet
     #+BEGIN_SRC emacs-lisp
-    (use-package yasnippet
-      :ensure t)
-    (yas-global-mode 1)
-    (setq yas-snippet-dirs '("/.emacs.d/snippets"))
+      (use-package yasnippet
+	:ensure t)
+      (yas-global-mode 1)
+      (setq yas-snippet-dirs '("/.emacs.d/snippets"))
     #+END_SRC
