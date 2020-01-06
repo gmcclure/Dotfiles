@@ -1,11 +1,6 @@
 #+TITLE: GMac's Emacs
-#+DATE: <2019-12-28 Sat 01:18>
+#+DATE: <2020-01-06 Mon>
 #+STARTUP: content
-
-* Currently Relevant Links
-  - [[https://ladicle.com/post/config/][Ladicle's Emacs Configuration]]
-  - [[https://jamiecollinson.com/blog/my-emacs-config/][Jamie Collinson Emacs Configuration]]
-
 
 * GMac's Emacs
 
@@ -22,7 +17,7 @@
 	time. The trick is to turn up the memory threshold as early as
 	possible.
        #+BEGIN_SRC emacs-lisp
-       (setq gc-cons-threshold 100000000)
+	 (setq gc-cons-threshold 100000000)
        #+END_SRC
 ***** Set gc-cons-threshold smaller for interactive use
       #+BEGIN_SRC emacs-lisp
@@ -84,15 +79,16 @@
 
 *** Theme
     #+BEGIN_SRC emacs-lisp
-      (load-theme 'doom-solarized-dark t)
+      ;(load-theme 'doom-solarized-dark t)
+      (load-theme 'doom-gruvbox t)
     #+END_SRC
 
 *** Typeface
     #+BEGIN_SRC emacs-lisp
       (when (eq system-type 'darwin)
 	(if (<= (display-pixel-width) 1680)
-	    (set-default-font "-*-APL385 Unicode-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1")
-	  (set-default-font "-*-APL385 Unicode-normal-normal-normal-*-22-*-*-*-m-0-iso10646-1")))
+	    (set-frame-font "-*-APL385 Unicode-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1")
+	  (set-frame-font "-*-APL385 Unicode-normal-normal-normal-*-22-*-*-*-m-0-iso10646-1")))
       (set-face-attribute 'variable-pitch nil :family "Baskerville")
     #+END_SRC
 
@@ -167,6 +163,29 @@
 	  (org-babel-mark-block)
 	  (indent-region (region-beginning) (region-end))))
 
+      ;; Screenshots
+      (defun insert-screenshot (file-name)
+	"Save screenshot to FILE-NAME and insert an Org link at point.
+
+      This calls the `import' from ImageMagick to take the screenshot,
+      and `optipng' to reduce the file size if the program is present."
+	(interactive "FSave to file: ")
+	;; Get absolute path
+	(let ((file (expand-file-name file-name)))
+	  ;; Create the directory if necessary
+	  (make-directory (file-name-directory file) 'parents)
+	  ;; Still, make sure to signal if the screenshot was in fact not created
+	  (unless (= 0 (call-process "import" nil nil nil file))
+	    (user-error "`import' failed to create screenshot %s" file))
+	  (if (executable-find "optipng")
+	      (start-process "optipng" nil "optipng" file))
+	  (insert
+	   ;; A link relative to the buffer where it is inserted is more portable
+	   (format "[[file:%s]]"
+		   (file-relative-name file
+				       (file-name-directory buffer-file-name))))
+	  (when (eq major-mode 'org-mode)
+	    (org-redisplay-inline-images))))
     #+END_SRC
 
 *** Miscellaneous Customizations
@@ -269,6 +288,38 @@
 	(cfw:open-ical-calendar "https://calendar.google.com/calendar/ical/gmcclure%40gmail.com/public/basic.ics"))
       (global-set-key (kbd "<f12>") 'gmc:open-gmc-calendar)
     #+END_SRC
+*** Company
+    #+BEGIN_SRC emacs-lisp
+      (use-package company
+	:diminish
+	:config
+	(global-company-mode 1)
+	(setq ;; Only 2 letters required for completion to activate.
+	 company-minimum-prefix-length 2
+
+	 ;; Search other buffers for compleition candidates
+	 company-dabbrev-other-buffers t
+	 company-dabbrev-code-other-buffers t
+
+	 ;; Allow (lengthy) numbers to be eligible for completion.
+	 company-complete-number t
+
+	 ;; M-⟪num⟫ to select an option according to its number.
+	 company-show-numbers t
+
+	 ;; Edge of the completion list cycles around.
+	 company-selection-wrap-around t
+
+	 ;; Do not downcase completions by default.
+	 company-dabbrev-downcase nil
+
+	 ;; Even if I write something with the ‘wrong’ case,
+	 ;; provide the ‘correct’ casing.
+	 company-dabbrev-ignore-case t
+
+	 ;; Immediately activate completion.
+	 company-idle-delay 0))
+    #+END_SRC
 *** Deft
     #+BEGIN_SRC emacs-lisp
       ;; Deft
@@ -364,10 +415,10 @@
 
 *** Eyebrowse
     #+BEGIN_SRC emacs-lisp
-    (use-package eyebrowse
-      :diminish eyebrowse-mode
-      :config
-      (eyebrowse-mode t))
+      (use-package eyebrowse
+	:diminish eyebrowse-mode
+	:config
+	(eyebrowse-mode t))
     #+END_SRC
 
 *** Diary
@@ -377,15 +428,15 @@
 
 *** Dired
     #+BEGIN_SRC emacs-lisp
-    ;; Dired
-    (setq dired-listing-switches "-alh")
-    (setq dired-recursive-copies (quote always))
-    (setq dired-recursive-deletes (quote top))
+      ;; Dired
+      (setq dired-listing-switches "-alh")
+      (setq dired-recursive-copies (quote always))
+      (setq dired-recursive-deletes (quote top))
 
-    ;; Dired-x
-    (require 'dired-x)
-    (setq-default dired-omit-files-p t) ; Buffer local variable
-    (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
+      ;; Dired-x
+      (require 'dired-x)
+      (setq-default dired-omit-files-p t) ; Buffer local variable
+      (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
     #+END_SRC
 
 *** Elpy
@@ -425,6 +476,64 @@
     (setq ispell-program-name "/usr/local/bin/aspell")
     #+END_SRC
 
+*** Helm
+    #+BEGIN_SRC emacs-lisp
+      (use-package helm
+	:ensure t
+	:config
+
+	;; Must set before helm-config
+	(setq helm-command-prefix-key "C-c h")
+
+	(require 'helm-config)
+	(require 'helm-eshell)
+	(require 'helm-files)
+	(require 'helm-grep)
+
+	(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
+	(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
+	(define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+
+	(define-key helm-grep-mode-map (kbd "<return>")  'helm-grep-mode-jump-other-window)
+	(define-key helm-grep-mode-map (kbd "n")  'helm-grep-mode-jump-other-window-forward)
+	(define-key helm-grep-mode-map (kbd "p")  'helm-grep-mode-jump-other-window-backward)
+
+	(setq
+	 helm-google-suggest-use-curl-p t
+	 helm-scroll-amount 4 ; scroll 4 lines other window using M-<next>/M-<prior>
+	 helm-quick-update t ; do not display invisible candidates
+	 helm-idle-delay 0.01 ; be idle for this many seconds, before updating in delayed sources.
+	 helm-input-idle-delay 0.01 ; be idle for this many seconds, before updating candidate buffer
+	 helm-ff-search-library-in-sexp t ; search for library in `require' and `declare-function' sexp.
+
+	 helm-split-window-default-side 'other ;; open helm buffer in another window
+	 helm-split-window-in-side-p t ;; open helm buffer inside current window, not occupy whole other window
+	 helm-buffers-favorite-modes (append helm-buffers-favorite-modes
+					     '(picture-mode artist-mode))
+	 helm-candidate-number-limit 100 ; limit the number of displayed canidates
+	 helm-M-x-requires-pattern 0     ; show all candidates when set to 0
+	 helm-boring-file-regexp-list
+	 '("\\.git$" "\\.hg$" "\\.svn$" "\\.CVS$" "\\._darcs$" "\\.la$" "\\.o$" "\\.i$") ; do not show these files in helm buffer
+	 helm-ff-file-name-history-use-recentf t
+	 helm-move-to-line-cycle-in-source t ; move to end or beginning of source
+					      ; when reaching top or bottom of source.
+	 ido-use-virtual-buffers t      ; Needed in helm-buffers-list
+	 helm-buffers-fuzzy-matching t          ; fuzzy matching buffer names when non--nil
+					      ; useful in helm-mini that lists buffers
+	 )
+
+	;; Save current position to mark ring when jumping to a different place
+	(add-hook 'helm-goto-line-before-hook 'helm-save-current-pos-to-mark-ring)
+
+	(helm-mode 1)
+
+	:bind
+	("M-x" . helm-M-x)
+	("C-;" . helm-M-x)
+	("C-x b" . helm-mini)
+	("C-x C-f" . helm-find-files))
+    #+END_SRC
+
 *** Hydra
     #+BEGIN_SRC emacs-lisp
       (use-package hydra
@@ -444,35 +553,66 @@
 *** Ivy (Amx, Counsel, Swiper)
     #+BEGIN_SRC emacs-lisp
       (use-package ivy
-	:diminish
-	:init
-	(use-package amx :defer t)
-	(use-package counsel :diminish :config (counsel-mode 1))
-	(use-package swiper :defer t)
-	(ivy-mode 1)
-	:bind
-	(("C-s" . swiper-isearch)
-	 ("M-s r" . ivy-resume)
-	 ("C-x b" . 'ivy-switch-buffer)
-	 ("C-;" . 'counsel-M-x)
-	 (:map ivy-minibuffer-map
-	       ("C-r" . ivy-previous-line-or-history)
-	       ("M-RET" . ivy-immediate-done))
-	 (:map counsel-find-file-map
-	       ("C-~" . counsel-goto-local-home)))
-	:custom
-	(ivy-use-virtual-buffers t)
-	(enable-recursive-minibuffers t)
-	(ivy-height 10)
-	(ivy-on-del-error-function nil)
-	(ivy-magic-slash-non-match-action 'ivy-magic-slash-non-match-create)
-	(ivy-count-format "【%d/%d】")
-	(ivy-wrap t)
+	:ensure try
 	:config
-	(defun counsel-goto-local-home ()
-	  "Go to the $HOME of the local machine."
-	  (interactive)
-	  (ivy--cd "~/")))
+	(ivy-mode 1)
+	(setq ivy-use-virtual-buffers t)
+	(setq enable-recursive-minibuffers t)
+	(setq ivy-count-format "(%d/%d) "))
+
+      (use-package swiper
+	:bind
+	("C-s" . 'swiper))
+      ;; (use-package posframe)
+      ;; (use-package ivy
+      ;;   :diminish
+      ;;   :init
+      ;;   (use-package amx :defer t)
+      ;;   (use-package counsel :diminish :config (counsel-mode 1))
+      ;;   (use-package swiper :defer t)
+      ;;   (ivy-mode 1)
+      ;;   :bind
+      ;;   (("C-s" . swiper-isearch)
+      ;;    ("M-s r" . ivy-resume)
+      ;;    ("C-x b" . 'ivy-switch-buffer)
+      ;;    ("C-;" . 'counsel-M-x)
+      ;;    (:map ivy-minibuffer-map
+      ;; 	 ("C-r" . ivy-previous-line-or-history)
+      ;; 	 ("M-RET" . ivy-immediate-done))
+      ;;    (:map counsel-find-file-map
+      ;; 	 ("C-~" . counsel-goto-local-home)))
+      ;;   :custom
+      ;;   (ivy-use-virtual-buffers t)
+      ;;   (enable-recursive-minibuffers t)
+      ;;   (ivy-height 10)
+      ;;   (ivy-on-del-error-function nil)
+      ;;   (ivy-magic-slash-non-match-action 'ivy-magic-slash-non-match-create)
+      ;;   (ivy-count-format "【%d/%d】")
+      ;;   (ivy-wrap t)
+      ;;   :config
+      ;;   (defun counsel-goto-local-home ()
+      ;;     "Go to the $HOME of the local machine."
+      ;;     (interactive)
+      ;;     (ivy--cd "~/")))
+
+      ;; (use-package ivy-posframe
+      ;;   :custom
+      ;;   (ivy-display-function #'ivy-posframe-display-at-frame-center)
+      ;;   ;; (ivy-posframe-width 130)
+      ;;   ;; (ivy-posframe-height 11)
+      ;;   (ivy-posframe-parameters
+      ;;    '((left-fringe . 5)
+      ;;      (right-fringe . 5)))
+      ;;   :custom-face
+      ;;   (ivy-posframe ((t (:background "#282a36"))))
+      ;;   (ivy-posframe-border ((t (:background "#6272a4"))))
+      ;;   (ivy-posframe-cursor ((t (:background "#61bfff"))))
+      ;;   :hook
+      ;;   (ivy-mode . ivy-posframe-enable))
+
+      ;; (use-package ivy-rich
+      ;;   :config
+      ;;   (ivy-rich-mode 1))
     #+END_SRC
 
 *** Magit
@@ -574,21 +714,41 @@
     #+END_SRC
 
 *** Org
-**** Org Options
+**** Options
      #+BEGIN_SRC emacs-lisp
        (setq org-special-ctrl-a/e 't)
        (setq org-src-tab-acts-natively t)
        (setq org-use-speed-commands t)
        (setq org-catch-invisible-edits 'show-and-error)
        (setq org-cycle-separator-lines 0)
+       (setq org-refile-targets (quote ((nil :maxlevel . 9))))
+       (setq org-refile-use-outline-path t)
+       (setq org-refile-allow-creating-parent-nodes (quote confirm))
      #+END_SRC
-**** Org Directories
+**** Directories
      #+BEGIN_SRC emacs-lisp
        (setq org-directory "~/Google Drive/Org")
        (setq org-mobile-inbox-for-pull "~/Google Drive/mobile-inbox.org")
        (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
      #+END_SRC
-**** Org Files
+**** Appearance
+     #+BEGIN_SRC emacs-lisp
+       (require 'org-bullets)
+       (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+       (setq org-ellipsis "⤵")
+     #+END_SRC
+**** Capture
+     #+BEGIN_SRC emacs-lisp
+       ;; Org Notes
+       (setq org-capture-templates
+	     '(("b" "Bookmark" entry (file+headline "~/Google Drive/Org/life.org" "Bookmarks")
+		"** %:link%?\n")
+	       ("t" "Todo" entry (file+headline "~/Google Drive/Org/todos.org" "TODOs")
+		"* TODO %?\n")
+	       ("j" "Post" entry (file+datetree "~/Google Drive/Org/journal.org")
+		"* %U %^{Title}\n %?")))
+     #+END_SRC
+**** Files
      #+BEGIN_SRC emacs-lisp
        (setq org-agenda-files
 	     (list "~/Google Drive/Org/journal.org"
@@ -596,30 +756,9 @@
 		   "~/Google Drive/Org/notes.org"
 		   "~/Google Drive/Org/todos.org"))
        (setq org-default-notes-file "~/Google Drive/Org/notes.org")
-
-       ;; Org Keys
-       (global-set-key "\C-cl" 'org-store-link)
-       (global-set-key "\C-cc" 'org-capture)
-       (global-set-key "\C-ca" 'org-agenda)
-       (global-set-key "\C-cb" 'org-iswitchb)
-
-       ;; Org Notes
-       (setq org-capture-templates
-	     '(("t" "Todo" entry (file+headline "~/Google Drive/Org/todos.org" "TODOs")
-		"* TODO %?\n")
-	       ("j" "Post" entry (file+datetree "~/Google Drive/Org/journal.org")
-		"* %U %^{Title}\n %?")))
-
-       ;; Org TODOs
-       (setq org-log-done 'note)
-       ;; Save clock history across Emacs sessions
-       (setq org-clock-persist 'history)
-       (org-clock-persistence-insinuate)
-
-       ;; Org Journal
-       (require 'org-journal)
-       (setq org-journal-dir "~/Google Drive/Journal")
-
+     #+END_SRC
+**** Functions
+     #+BEGIN_SRC emacs-lisp
        (defun org-force-open-current-window ()
 	 (interactive)
 	 (let ((org-link-frame-setup (quote
@@ -637,14 +776,33 @@
 	 (if arg
 	     (org-open-at-point)
 	   (org-force-open-current-window)))
+     #+END_SRC
+**** Keys
+     #+BEGIN_SRC emacs-lisp
+       (global-set-key "\C-cl" 'org-store-link)
+       (global-set-key "\C-cc" 'org-capture)
+       (global-set-key "\C-ca" 'org-agenda)
+       (global-set-key "\C-cb" 'org-iswitchb)
 
        ;; Redefine file opening without clobbering universal argumnet
+       ;; org-open-maybe is defined in org functions section
        (define-key org-mode-map "\C-c\C-o" 'org-open-maybe)
+       (define-key org-mode-map "\C-c\C-x\C-r" 'org-refile)
+     #+END_SRC
 
-       ;; Org Bullets
-       (require 'org-bullets)
-       (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-       (setq org-ellipsis "⤵")
+**** TODOs
+     #+BEGIN_SRC emacs-lisp
+       ;; Org TODOs
+       (setq org-log-done 'note)
+       ;; Save clock history across Emacs sessions
+       (setq org-clock-persist 'history)
+       (org-clock-persistence-insinuate)
+	    #+END_SRC
+**** Journal
+     #+BEGIN_SRC emacs-lisp
+       ;; Org Journal
+       (require 'org-journal)
+       (setq org-journal-dir "~/Google Drive/Journal")
      #+END_SRC
 
 *** Page Break Lines

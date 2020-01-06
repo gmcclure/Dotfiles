@@ -2,6 +2,11 @@
 
 ;; Use
 ;; https://github.com/jwiegley/use-package
+
+;; When debugging is necessary ...
+;(setq debug-on-error t)
+;(setq debug-on-quit t)
+
 (when (>= emacs-major-version 24)
   (require 'package)
   (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
