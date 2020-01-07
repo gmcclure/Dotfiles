@@ -85,10 +85,15 @@
 
 *** Typeface
     #+BEGIN_SRC emacs-lisp
-      (when (eq system-type 'darwin)
+      (defun gmc:set-session-resolution ()
+	(interactive)
 	(if (<= (display-pixel-width) 1680)
 	    (set-frame-font "-*-APL385 Unicode-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1")
 	  (set-frame-font "-*-APL385 Unicode-normal-normal-normal-*-22-*-*-*-m-0-iso10646-1")))
+
+      (when (eq system-type 'darwin)
+	(gmc:set-session-resolution))
+
       (set-face-attribute 'variable-pitch nil :family "Baskerville")
     #+END_SRC
 
@@ -127,13 +132,13 @@
       ;; Makes C-k kill an entire line when cursor is at line beginning
       (setq kill-whole-line t)
 
-      (defun reload-init-file ()
+      (defun gmc:reload-init-file ()
 	"Reload init.el file"
 	(interactive)
 	(load user-init-file)
 	(message "Reloaded init.el OK."))
 
-      (defun open-init-file ()
+      (defun gmc:open-init-file ()
 	(interactive)
 	(find-file "~/.emacs.d/org-init.org"))
 
@@ -148,7 +153,7 @@
       (global-set-key (kbd "C-(") 'scroll-up-line)
       (global-set-key (kbd "C-)") 'scroll-down-line)
       (global-set-key (kbd "C-c 0") 'ansi-term)
-      (global-set-key (kbd "C-c i") 'open-init-file)
+      (global-set-key (kbd "C-c i") 'gmc:open-init-file)
       (global-set-key (kbd "C-c o")
 		      (lambda () (interactive) (find-file "~/Google Drive/Org/life.org")))
       (global-set-key (kbd "C-c n") 'indent-region)
@@ -164,7 +169,7 @@
 	  (indent-region (region-beginning) (region-end))))
 
       ;; Screenshots
-      (defun insert-screenshot (file-name)
+      (defun gmc:insert-screenshot (file-name)
 	"Save screenshot to FILE-NAME and insert an Org link at point.
 
       This calls the `import' from ImageMagick to take the screenshot,
