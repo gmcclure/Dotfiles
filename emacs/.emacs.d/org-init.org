@@ -851,16 +851,6 @@
       (setq slime-contribs '(slime-fancy))
     #+END_SRC
 
-*** Spaceline
-    #+BEGIN_SRC emacs-lisp
-      (use-package spaceline
-	:ensure t
-	:config
-	(spaceline-emacs-theme)
-	(spaceline-helm-mode 1)
-	(powerline-reset))
-    #+END_SRC
-
 *** Undo Tree
     #+BEGIN_SRC emacs-lisp
       (use-package undo-tree
