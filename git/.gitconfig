@@ -1,8 +1,8 @@
 [user]
-	name = G McClure
-	email = gmcclure@gmail.com
+    name  = G McClure
+    email = gmcclure@gmail.com
 [alias]
-	ci  = commit
+    ci  = commit
     co  = checkout
     cob = checkout -b
     ec  = config --global -e
@@ -10,5 +10,5 @@
     lds = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
     ll  = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
     ls  = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
-	st  = status -sb
-	pm  = push -u origin master
+    st  = status -sb
+    pm  = push -u origin master

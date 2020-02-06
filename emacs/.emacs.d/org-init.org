@@ -88,8 +88,8 @@
       (defun gmc:set-session-resolution ()
 	(interactive)
 	(if (<= (display-pixel-width) 1680)
-	    (set-frame-font "-*-APL385 Unicode-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1")
-	  (set-frame-font "-*-APL385 Unicode-normal-normal-normal-*-22-*-*-*-m-0-iso10646-1")))
+	      (set-frame-font "-*-APL385 Unicode-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1")
+	    (set-frame-font "-*-APL385 Unicode-normal-normal-*-22-*-*-*-m-0-iso10646-1")))
 
       (when (eq system-type 'darwin)
 	(gmc:set-session-resolution))
@@ -299,8 +299,9 @@
 	:diminish
 	:config
 	(global-company-mode 1)
+	(company-tng-configure-default)
 	(setq ;; Only 2 letters required for completion to activate.
-	 company-minimum-prefix-length 2
+	 company-minimum-prefix-length 3
 
 	 ;; Search other buffers for compleition candidates
 	 company-dabbrev-other-buffers t
@@ -334,6 +335,7 @@
 	:ensure t
 	:config
 	(setq deft-directory "~/Google Drive/Notes")
+	(setq deft-recursive t)
 	(setq deft-extension '("org" "txt"))
 	(setq deft-text-mode 'org-mode)
 	(setq deft-use-filename-as-title t)
@@ -342,6 +344,14 @@
 	:bind
 	("C-c d" . deft))
     #+END_SRC
+
+*** Doom Modeline
+    #+BEGIN_SRC emacs-lisp
+      (use-package doom-modeline
+	:ensure t
+	:hook (after-init . doom-modeline-mode))
+    #+END_SRC
+
 
 *** Elfeed
     #+BEGIN_SRC emacs-lisp
@@ -448,6 +458,8 @@
     #+BEGIN_SRC emacs-lisp
       (when (require 'elpy nil t)
 	(elpy-enable))
+
+      ;; from https://github.com/jorgenschaefer/elpy/issues/1550
       (setq elpy-shell-echo-output nil
 	    python-shell-interpreter "ipython"
 	    python-shell-interpreter-args "--simple-prompt -c exec('__import__(\\'readline\\')') -i")
@@ -479,6 +491,11 @@
 *** Flyspell
     #+BEGIN_SRC emacs-lisp
     (setq ispell-program-name "/usr/local/bin/aspell")
+    #+END_SRC
+
+*** Info
+    #+BEGIN_SRC emacs-lisp
+      (add-hook 'Info-selection-hook 'info-colors-fontify-node)
     #+END_SRC
 
 *** Helm
@@ -716,14 +733,15 @@
 *** Org
 **** Options
      #+BEGIN_SRC emacs-lisp
-       (setq org-special-ctrl-a/e 't)
-       (setq org-src-tab-acts-natively t)
-       (setq org-use-speed-commands t)
-       (setq org-catch-invisible-edits 'show-and-error)
-       (setq org-cycle-separator-lines 0)
-       (setq org-refile-targets (quote ((nil :maxlevel . 9))))
-       (setq org-refile-use-outline-path t)
-       (setq org-refile-allow-creating-parent-nodes (quote confirm))
+	      (setq org-special-ctrl-a/e 't)
+	      (setq org-src-tab-acts-natively t)
+	      (setq org-use-speed-commands t)
+	      (setq org-catch-invisible-edits 'show-and-error)
+	      (setq org-cycle-separator-lines 0)
+	      (setq org-refile-targets (quote ((nil :maxlevel . 9)
+					       (org-agenda-files :maxlevel . 9))))
+	      (setq org-refile-use-outline-path t)
+	      (setq org-refile-allow-creating-parent-nodes (quote confirm))
      #+END_SRC
 **** Directories
      #+BEGIN_SRC emacs-lisp
@@ -890,6 +908,22 @@
 	:diminish which-key-mode
 	:config
 	(which-key-mode 1))
+    #+END_SRC
+
+*** Yankpad
+    #+BEGIN_SRC emacs-lisp
+      (use-package yankpad
+	:ensure t
+	:defer 10
+	:init
+	(setq yankpad-file "~/Google Drive/Org/snips.org")
+	:config
+	(bind-key "C-c C-x m" 'yankpad-map)
+	(bind-key "C-c C-x y" 'yankpad-expand)
+	;; If you want to complete snippets using company-mode
+	(add-to-list 'company-backends #'company-yankpad)
+	;; If you want to expand snippets with hippie-expand
+	(add-to-list 'hippie-expand-try-functions-list #'yankpad-expand))
     #+END_SRC
 
 *** YASnippet
