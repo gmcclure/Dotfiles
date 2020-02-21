@@ -1,5 +1,5 @@
 #+TITLE: GMac's Emacs
-#+DATE: <2020-01-06 Mon>
+#+DATE: <2020-02-12 Wed>
 #+STARTUP: content
 
 * GMac's Emacs
@@ -127,7 +127,7 @@
 	    kept-old-versions 5)
     #+END_SRC
 
-*** Custom Keys & Functions
+*** Miscellaneous Customization
     #+BEGIN_SRC emacs-lisp
       ;; Makes C-k kill an entire line when cursor is at line beginning
       (setq kill-whole-line t)
@@ -152,11 +152,12 @@
       (global-set-key "\M-z" 'zap-up-to-char)
       (global-set-key (kbd "C-(") 'scroll-up-line)
       (global-set-key (kbd "C-)") 'scroll-down-line)
-      (global-set-key (kbd "C-c 0") 'ansi-term)
+      (global-set-key (kbd "C-c 0") 'eshell)
       (global-set-key (kbd "C-c i") 'gmc:open-init-file)
       (global-set-key (kbd "C-c o")
 		      (lambda () (interactive) (find-file "~/Google Drive/Org/life.org")))
       (global-set-key (kbd "C-c n") 'indent-region)
+      (global-set-key (kbd "RET") 'newline-and-indent)
 
       ;; Always remove trailing whitespace
       (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -172,8 +173,8 @@
       (defun gmc:insert-screenshot (file-name)
 	"Save screenshot to FILE-NAME and insert an Org link at point.
 
-      This calls the `import' from ImageMagick to take the screenshot,
-      and `optipng' to reduce the file size if the program is present."
+	    This calls the `import' from ImageMagick to take the screenshot,
+	    and `optipng' to reduce the file size if the program is present."
 	(interactive "FSave to file: ")
 	;; Get absolute path
 	(let ((file (expand-file-name file-name)))
@@ -191,19 +192,6 @@
 				       (file-name-directory buffer-file-name))))
 	  (when (eq major-mode 'org-mode)
 	    (org-redisplay-inline-images))))
-    #+END_SRC
-
-*** Miscellaneous Customizations
-    #+BEGIN_SRC emacs-lisp
-      (use-package clean-aindent-mode
-	:ensure t
-	:config
-	(add-hook 'prog-mode-hook 'clean-aindent-mode))
-
-      (use-package volatile-highlights
-	:ensure t
-	:config
-	(volatile-highlights-mode t))
 
       ; Flash the modeline for the bell
       (setq ring-bell-function
@@ -293,6 +281,17 @@
 	(cfw:open-ical-calendar "https://calendar.google.com/calendar/ical/gmcclure%40gmail.com/public/basic.ics"))
       (global-set-key (kbd "<f12>") 'gmc:open-gmc-calendar)
     #+END_SRC
+*** Clean Aindent
+    #+BEGIN_SRC emacs-lisp
+      (use-package clean-aindent-mode
+	:ensure t
+	:config
+	(electric-indent-mode -1)
+	(clean-aindent-mode t)
+	(setq clean-aindent-is-simple-indent t)
+	(add-hook 'prog-mode-hook 'clean-aindent-mode))
+    #+END_SRC
+
 *** Company
     #+BEGIN_SRC emacs-lisp
       (use-package company
@@ -412,6 +411,21 @@
 	      "https://www.reddit.com/r/emacs.rss"))
     #+END_SRC
 
+*** Eshell
+    #+BEGIN_SRC emacs-lisp
+      (add-hook 'eshell-banner-load-hook
+		'(lambda ()
+		   (setq eshell-banner-message
+			 (if (executable-find "fortune")
+			     (concat (shell-command-to-string "fortune -s") "\n")
+			   (concat "GMacs engaged." "\n\n")))))
+
+      (setq eshell-prompt-function
+	    (lambda ()
+	      (concat (format-time-string "%Y-%m-%d %H:%M" (current-time))
+		      (if (= (user-uid) 0) " # " " $ "))))
+    #+END_SRC
+
 *** Exec-Path-From-Shell
     #+BEGIN_SRC emacs-lisp
       ;; Get environment variables such as $PATH from the shell
@@ -432,6 +446,7 @@
     #+BEGIN_SRC emacs-lisp
       (use-package eyebrowse
 	:diminish eyebrowse-mode
+	:init (setq eyebrowse-keymap-prefix (kbd "C-c C-g"))
 	:config
 	(eyebrowse-mode t))
     #+END_SRC
@@ -877,6 +892,14 @@
 	:config
 	(global-undo-tree-mode 1)
 	(defalias 'redo 'undo-tree-redo))
+    #+END_SRC
+
+*** Volatile Highlights
+    #+BEGIN_SRC emacs-lisp
+      (use-package volatile-highlights
+	:ensure t
+	:config
+	(volatile-highlights-mode t))
     #+END_SRC
 
 *** Web-Mode
