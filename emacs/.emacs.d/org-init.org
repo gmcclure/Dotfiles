@@ -884,6 +884,15 @@
       (setq slime-contribs '(slime-fancy))
     #+END_SRC
 
+*** Supercollider
+    #+BEGIN_SRC emacs-lisp
+      (add-to-list 'load-path "~/Etc/Lib/scel/el")
+      (require 'sclang)
+
+      (setenv "PATH" (concat (getenv "PATH") ":/Applications/SuperCollider.app:/Applications/SuperCollider.app/Contents/MacOS"))
+      (setq exec-path (append exec-path '("/Applications/SuperCollider.app"  "/Applications/SuperCollider.app/Contents/MacOS" )))
+    #+END_SRC
+
 *** Undo Tree
     #+BEGIN_SRC emacs-lisp
       (use-package undo-tree
