@@ -61,6 +61,10 @@ Plug 'vimwiki/vimwiki'
 Plug 'glench/vim-jinja2-syntax'
 Plug 'digitaltoad/vim-pug'
 Plug 'jbgutierrez/vim-babel'
+Plug 'junegunn/limelight.vim'
+Plug 'morhetz/gruvbox'
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
 Plug '~/.vim/local'
 
 call plug#end()
@@ -108,6 +112,7 @@ set splitbelow
 set smartcase
 set switchbuf=useopen,usetab
 set t_Co=256
+set termguicolors
 set textwidth=0
 set novisualbell
 set viminfo='20,\"50
@@ -135,10 +140,10 @@ colo space-vim-dark
 
 " Set font
 " set gfn=Source\ Code\ Pro\ for\ Powerline:h18
-" set gfn=monofur\ for\ Powerline:h23
-" set gfn=Fira\ Mono\ for\ Powerline:h18
+set gfn=monofur\ for\ Powerline:h23
+" set gfn=Fira\ Mono\ for\ Powerline:h20
 " set gfn=APL385\ Unicode:h21
-set gfn=Hack:h20
+" set gfn=Hack:h20
 
 " }}}
 
@@ -337,6 +342,22 @@ nmap <leader>; :Buffers<cr>
 " gist
 let g:github_user = 'gmcclure'
 let g:github_token = '93f23d5f99a188a23412a996609e7a5b'
+
+" goyo
+let g:goyo_width = 80
+
+function! s:goyo_enter()
+    set textwidth=70
+    Limelight
+endfunction
+
+function! s:goyo_leave()
+    set textwidth=0
+    Limelight!
+endfunction
+
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
 " mustache-mode
 let g:mustache_abbreviations = 1
