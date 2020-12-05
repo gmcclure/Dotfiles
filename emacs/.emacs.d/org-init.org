@@ -149,15 +149,24 @@
       (setq mac-option-modifier 'super)
       (setq mac-command-modifier 'meta)
 
+      ;; Duplicate a line
+      (defun duplicate-line ()
+	(interactive)
+	(move-beginning-of-line 1)
+	(kill-line)
+	(yank)
+	(yank))
+
       (global-set-key "\M-z" 'zap-up-to-char)
       (global-set-key (kbd "C-(") 'scroll-up-line)
       (global-set-key (kbd "C-)") 'scroll-down-line)
       (global-set-key (kbd "C-c 0") 'eshell)
       (global-set-key (kbd "C-c i") 'gmc:open-init-file)
       (global-set-key (kbd "C-c o")
-		      (lambda () (interactive) (find-file "~/Dropbox/Org/life.org")))
+		      (lambda () (interactive) (find-file "~/Google Drive/Org/life.org")))
       (global-set-key (kbd "C-c n") 'indent-region)
       (global-set-key (kbd "RET") 'newline-and-indent)
+      (global-set-key (kbd "C-s-d") 'duplicate-line)
 
       ;; Always remove trailing whitespace
       (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -173,8 +182,8 @@
       (defun gmc:insert-screenshot (file-name)
 	"Save screenshot to FILE-NAME and insert an Org link at point.
 
-	    This calls the `import' from ImageMagick to take the screenshot,
-	    and `optipng' to reduce the file size if the program is present."
+				  This calls the `import' from ImageMagick to take the screenshot,
+				  and `optipng' to reduce the file size if the program is present."
 	(interactive "FSave to file: ")
 	;; Get absolute path
 	(let ((file (expand-file-name file-name)))
@@ -193,7 +202,7 @@
 	  (when (eq major-mode 'org-mode)
 	    (org-redisplay-inline-images))))
 
-      ; Flash the modeline for the bell
+					      ; Flash the modeline for the bell
       (setq ring-bell-function
 	    (lambda ()
 	      (let ((orig-fg (face-foreground 'mode-line)))
@@ -202,7 +211,7 @@
 				     (lambda (fg) (set-face-foreground 'mode-line fg))
 				     orig-fg))))
 
-      ; Close term buffer on exit
+					      ; Close term buffer on exit
       (defadvice term-handle-exit
 	  (after term-kill-buffer-on-exit activate)
 	(kill-buffer))
@@ -354,68 +363,64 @@
 
 *** Elfeed
     #+BEGIN_SRC emacs-lisp
-      (use-package elfeed
-	:ensure t
-	:bind
-	("C-x w" . 'elfeed))
+			(use-package elfeed
+			  :ensure t
+			  :bind
+			  ("C-x w" . 'elfeed))
 
-      (use-package elfeed-goodies
-	:ensure t
-	:config
-	(elfeed-goodies/setup))
+			(use-package elfeed-goodies
+			  :ensure t
+			  :config
+			  (elfeed-goodies/setup))
 
-      (setq elfeed-feeds
-	    '(("https://news.ycombinator.com/rss" tech)
-	      ("https://lobste.rs/rss" tech)
-	      ("http://feeds.feedburner.com/brainpickings/rss" general)
-	      ("http://feeds.feedburner.com/OpenCulture" general)
-	      ("http://feeds.feedburner.com/universetoday/pYdq" science)
-	      ("http://feeds.101cookbooks.com/101cookbooks" cooking)
-	      ("http://feeds.feedburner.com/CookieAndKate" cooking)
-	      ("http://withfoodandlove.com/feed/" cooking)
-	      ("http://feeds.seriouseats.com/seriouseatsfeaturesvideos" cooking)
-	      ("http://www.greenkitchenstories.com/feed/" cooking)
-	      ("http://feeds.feedburner.com/MinimalistBaker" cooking)
-	      ("http://feeds.feedburner.com/NaturallyElla" cooking)
-	      ("http://feeds.feedburner.com/CoolTools" fun)
-	      ("http://feeds.feedburner.com/nofilmschool/" film)
-	      ("http://love-python.blogspot.com/feeds/posts/default" dev)
-	      ("http://feeds.feedburner.com/CssTricks" dev)
-	      ("http://feeds.feedburner.com/Bludice" dev)
-	      ("http://www.raywenderlich.com/category/swift/feed" dev)
-	      ("https://www.hackingwithswift.com/articles/rss" dev)
-	      ("http://feeds.feedburner.com/Catswhocode" dev)
-	      ("http://www.techiedelight.com/feed/" dev)
-	      ("http://feeds.feedburner.com/catonmat" dev)
-	      ("http://programmingpraxis.com/feed/" dev)
-	      ("http://feeds.feedburner.com/filmmakeriq" film)
-	      ("http://osxdaily.com/feed/" tech)
-	      ("http://feeds.feedburner.com/Noupe" dev)
-	      ("http://feeds.feedburner.com/design-milk" art)
-	      ("http://feeds.feedburner.com/weburbanist" art)
-	      ("http://feeds.feedburner.com/colossal" art)
-	      ("http://rss1.smashingmagazine.com/feed/" dev)
-	      ("http://penpaperpencil.net/rss" pencils)
-	      ("http://www.pencilrevolution.com/feed/" pencils)
-	      ("http://feeds.feedburner.com/NotebookStories" pencils)
-	      ("http://wellappointeddesk.com/feed/" pencils)
-	      ("http://feeds.feedburner.com/penaddict/XQKI" pencils)
-	      ("http://therecordingrevolution.com/feed/" music)
-	      ("http://www.soundonsound.com/news/sosrssfeed.php" music)
-	      ("http://www.gearjunkies.com/feed/" music)
-	      ("http://www.factmag.com/feed/" music)
-	      ("https://feedity.com/musicradar-com/VFtaWlJW.rss" music)
-	      ("http://www.theguitarjournal.com/feed/" music)
-	      ("http://www.premierguitar.com/rss/Magazine.aspx" music)
-	      ("http://www.carryology.com/feed/" fun)
-	      ("http://xkcd.com/rss.xml" fun)
-	      ("http://www.laist.com/index.rdf" general)
-	      ("http://feeds.feedburner.com/thesartorialist" fasion)
-	      ("http://feedpress.me/wink" reading)
-	      ("http://tetw.tumblr.com/rss" reading)
-	      ("https://www.reddit.com/r/emacs.rss" emacs)
-	      ("https://cdm.link/feed/" music)
-	      ("https://www.creativefieldrecording.com/feed/" music)))
+			(setq elfeed-feeds
+			      '(("https://news.ycombinator.com/rss" tech)
+				("http://feeds.feedburner.com/brainpickings/rss" general)
+				("http://feeds.feedburner.com/OpenCulture" general)
+				("http://feeds.feedburner.com/universetoday/pYdq" science)
+				("http://feeds.101cookbooks.com/101cookbooks" cooking)
+				("https://pianodao.com/feed/" music)
+				("http://withfoodandlove.com/feed/" cooking)
+				("http://feeds.feedburner.com/NaturallyElla" cooking)
+				("http://feeds.feedburner.com/CoolTools" fun)
+				("http://feeds.feedburner.com/nofilmschool/" film)
+				("http://love-python.blogspot.com/feeds/posts/default" dev)
+				("http://feeds.feedburner.com/CssTricks" dev)
+				("http://feeds.feedburner.com/Bludice" dev)
+				("http://www.raywenderlich.com/category/swift/feed" dev)
+				("https://www.hackingwithswift.com/articles/rss" dev)
+				("http://feeds.feedburner.com/Catswhocode" dev)
+				("http://www.techiedelight.com/feed/" dev)
+				("http://feeds.feedburner.com/catonmat" dev)
+				("http://feeds.feedburner.com/filmmakeriq" film)
+				("http://osxdaily.com/feed/" tech)
+				("http://feeds.feedburner.com/Noupe" dev)
+				("http://feeds.feedburner.com/design-milk" art)
+				("http://feeds.feedburner.com/weburbanist" art)
+				("http://feeds.feedburner.com/colossal" art)
+				("http://rss1.smashingmagazine.com/feed/" dev)
+				("http://penpaperpencil.net/rss" pencils)
+				("http://www.pencilrevolution.com/feed/" pencils)
+				("http://feeds.feedburner.com/NotebookStories" pencils)
+				("http://wellappointeddesk.com/feed/" pencils)
+				("http://feeds.feedburner.com/penaddict/XQKI" pencils)
+				("http://therecordingrevolution.com/feed/" music)
+				("http://www.soundonsound.com/news/sosrssfeed.php" music)
+				("http://www.gearjunkies.com/feed/" music)
+				("http://www.factmag.com/feed/" music)
+				("https://feedity.com/musicradar-com/VFtaWlJW.rss" music)
+				("http://www.theguitarjournal.com/feed/" music)
+				("http://www.premierguitar.com/rss/Magazine.aspx" music)
+				("http://www.carryology.com/feed/" fun)
+				("http://xkcd.com/rss.xml" fun)
+				("http://www.laist.com/index.rdf" general)
+				("http://feeds.feedburner.com/thesartorialist" fasion)
+				("https://cdm.link/feed/" music)
+				("https://www.creativefieldrecording.com/feed/" music)
+				("https://pedals.thedelimagazine.com/feed/" music)
+				("https://chessimprover.com/feed/" chess)
+				("http://iheartguitarblog.com/feed" music)
+				("https://www.gearnews.com/zone/guitar/feed/" music)))
     #+END_SRC
 
 *** Eshell
@@ -460,7 +465,7 @@
 
 *** Diary
     #+BEGIN_SRC emacs-lisp
-      (setq diary-file "~/Dropbox/App")
+      (setq diary-file "~/Google Drive/App")
     #+END_SRC
 
 *** Dired
@@ -767,9 +772,9 @@
      #+END_SRC
 **** Directories
      #+BEGIN_SRC emacs-lisp
-       (setq org-directory "~/Dropbox/Org")
+       (setq org-directory "~/Google Drive/Org")
        ;(setq org-mobile-inbox-for-pull "~/Google Drive/mobile-inbox.org")
-       ;(setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+       ;(setq org-mobile-directory "~/Google Drive/Apps/MobileOrg")
      #+END_SRC
 **** Appearance
      #+BEGIN_SRC emacs-lisp
@@ -781,21 +786,21 @@
      #+BEGIN_SRC emacs-lisp
        ;; Org Notes
        (setq org-capture-templates
-	     '(("b" "Bookmark" entry (file+headline "~/Dropbox/Org/life.org" "Bookmarks")
+	     '(("b" "Bookmark" entry (file+headline "~/Google Drive/Org/life.org" "Bookmarks")
 		"** %:link%?\n")
-	       ("t" "Todo" entry (file+headline "~/Dropbox/Org/todos.org" "TODOs")
+	       ("t" "Todo" entry (file+headline "~/Google Drive/Org/todos.org" "TODOs")
 		"* TODO %?\n")
-	       ("j" "Post" entry (file+datetree "~/Dropbox/Org/journal.org")
+	       ("j" "Post" entry (file+datetree "~/Google Drive/Org/journal.org")
 		"* %U %^{Title}\n %?")))
      #+END_SRC
 **** Files
      #+BEGIN_SRC emacs-lisp
        (setq org-agenda-files
-	     (list "~/Dropbox/Org/journal.org"
-		   "~/Dropbox/Org/life.org"
-		   "~/Dropbox/Org/notes.org"
-		   "~/Dropbox/Org/todos.org"))
-       (setq org-default-notes-file "~/Dropbox/Org/notes.org")
+	     (list "~/Google Drive/Org/journal.org"
+		   "~/Google Drive/Org/life.org"
+		   "~/Google Drive/Org/notes.org"
+		   "~/Google Drive/Org/todos.org"))
+       (setq org-default-notes-file "~/Google Drive/Org/notes.org")
      #+END_SRC
 **** Functions
      #+BEGIN_SRC emacs-lisp
@@ -870,7 +875,6 @@
 	:config
 	(projectile-global-mode)
 	(setq projectile-completion-system 'helm)
-	(helm-projectile-on)
 	(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
     #+END_SRC
 
@@ -955,7 +959,7 @@
 	:ensure t
 	:defer 10
 	:init
-	(setq yankpad-file "~/Dropbox/Org/snips.org")
+	(setq yankpad-file "~/Google Drive/Org/snips.org")
 	:config
 	(bind-key "C-c C-x m" 'yankpad-map)
 	(bind-key "C-c C-x y" 'yankpad-expand)

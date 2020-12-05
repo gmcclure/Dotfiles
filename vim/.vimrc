@@ -65,6 +65,7 @@ Plug 'junegunn/limelight.vim'
 Plug 'morhetz/gruvbox'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
+Plug 'OmniSharp/omnisharp-vim'
 Plug '~/.vim/local'
 
 call plug#end()
@@ -370,6 +371,11 @@ let g:neosnippet#snippets_directory = '~/.vim/snippets'
 imap <c-k> <Plug>(neosnippet_expand_or_jump)
 smap <c-k> <Plug>(neosnippet_expand_or_jump)
 xmap <c-k> <Plug>(neosnippet_expand_target)
+
+" omnisharp
+set completeopt=longest,menuone,popuphidden
+set completepopup=highlight:Pmenu,border:off
+g:OmniSharp_server_use_mono = 1
 
 " supertab-like snippets behavior.
 imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
