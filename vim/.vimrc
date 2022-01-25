@@ -19,14 +19,13 @@
 " :: Setup {{{
 "----------------------------------------------------------
 
-" turn off vi compatibility for maximum vim goodness
+" Turn off vi compatibility for maximum vim goodness
 set nocompatible
 
 " Plug.vim
 call plug#begin('~/.vim/plugged')
 
 " Bundles
-Plug 'altercation/vim-colors-solarized'
 Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'vim-scripts/matchit.zip'
@@ -52,7 +51,6 @@ Plug 'tpope/vim-repeat'
 Plug 'sheerun/vim-polyglot'
 Plug 'burnettk/vim-angular'
 Plug 'ledger/vim-ledger'
-Plug 'liuchengxu/space-vim-dark'
 Plug 'wincent/terminus'
 Plug 'hrother/offlineimaprc.vim'
 Plug 'tpope/vim-liquid'
@@ -61,11 +59,21 @@ Plug 'vimwiki/vimwiki'
 Plug 'glench/vim-jinja2-syntax'
 Plug 'digitaltoad/vim-pug'
 Plug 'jbgutierrez/vim-babel'
-Plug 'junegunn/limelight.vim'
+Plug 'dhruvasagar/vim-table-mode/'
+Plug 'srcery-colors/srcery-vim'
+
+" Themes
+Plug 'altercation/vim-colors-solarized'
+Plug 'liuchengxu/space-vim-dark'
 Plug 'morhetz/gruvbox'
+
+" Writing plugins
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
-Plug 'OmniSharp/omnisharp-vim'
+
+" Plug 'OmniSharp/omnisharp-vim'
+" Plug 'kyoz/purify'
+
 Plug '~/.vim/local'
 
 call plug#end()
@@ -90,6 +98,7 @@ set fileformats="mac,unix,dos"
 set foldenable
 set foldlevel=99
 set foldmethod=manual
+set formatprg=par\ -w80
 set grepformat=%f:%l:%m
 set grepprg=/usr/local/bin/ack
 set hidden
@@ -121,6 +130,8 @@ set wildmenu
 set wildmode=list:longest
 set wrapmargin=0
 set rtp+=/usr/local/opt/fzf
+set noerrorbells
+set vb t_vb=
 
 " }}}
 
@@ -137,7 +148,7 @@ endtry
 
 syntax on
 
-colo space-vim-dark
+colo srcery
 
 " Set font
 " set gfn=Source\ Code\ Pro\ for\ Powerline:h18
@@ -373,9 +384,9 @@ smap <c-k> <Plug>(neosnippet_expand_or_jump)
 xmap <c-k> <Plug>(neosnippet_expand_target)
 
 " omnisharp
-set completeopt=longest,menuone,popuphidden
-set completepopup=highlight:Pmenu,border:off
-g:OmniSharp_server_use_mono = 1
+"set completeopt=longest,menuone,popuphidden
+"set completepopup=highlight:Pmenu,border:off
+"g:OmniSharp_server_use_mono = 1
 
 " supertab-like snippets behavior.
 imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
@@ -412,6 +423,7 @@ let g:togglecursor_leave = 'underline'
 " vimwiki
 let g:vimwiki_folding = 'list'
 let g:vimwiki_list = [{ 'path': '~/Etc/McWiki/', 'path_html': '~/Etc/McWikiSite/'  }]
+let g:vimwiki_url_maxsave = 0
 
 " }}}
 

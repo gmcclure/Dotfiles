@@ -39,7 +39,7 @@
       (setenv "PKG_CONFIG_PATH"
 	      "/usr/local/opt/libffi/lib/pkgconfig")
       (setenv "WORKON_HOME"
-	      "/Users/gmcclure/Etc/Virtualenvs")
+	      "/Users/gmcclure/Etc/VirtualEnvs")
     #+END_SRC
 
 *** Personalization
@@ -132,6 +132,8 @@
       ;; Makes C-k kill an entire line when cursor is at line beginning
       (setq kill-whole-line t)
 
+      (setq default-directory "/Users/gmcclure")
+
       (defun gmc:reload-init-file ()
 	"Reload init.el file"
 	(interactive)
@@ -182,8 +184,8 @@
       (defun gmc:insert-screenshot (file-name)
 	"Save screenshot to FILE-NAME and insert an Org link at point.
 
-				  This calls the `import' from ImageMagick to take the screenshot,
-				  and `optipng' to reduce the file size if the program is present."
+					This calls the `import' from ImageMagick to take the screenshot,
+					and `optipng' to reduce the file size if the program is present."
 	(interactive "FSave to file: ")
 	;; Get absolute path
 	(let ((file (expand-file-name file-name)))
@@ -363,64 +365,57 @@
 
 *** Elfeed
     #+BEGIN_SRC emacs-lisp
-			(use-package elfeed
-			  :ensure t
-			  :bind
-			  ("C-x w" . 'elfeed))
+      (use-package elfeed
+	:ensure t
+	:bind
+	("C-x w" . 'elfeed))
 
-			(use-package elfeed-goodies
-			  :ensure t
-			  :config
-			  (elfeed-goodies/setup))
+      (use-package elfeed-goodies
+	:ensure t
+	:config
+	(elfeed-goodies/setup))
 
-			(setq elfeed-feeds
-			      '(("https://news.ycombinator.com/rss" tech)
-				("http://feeds.feedburner.com/brainpickings/rss" general)
-				("http://feeds.feedburner.com/OpenCulture" general)
-				("http://feeds.feedburner.com/universetoday/pYdq" science)
-				("http://feeds.101cookbooks.com/101cookbooks" cooking)
-				("https://pianodao.com/feed/" music)
-				("http://withfoodandlove.com/feed/" cooking)
-				("http://feeds.feedburner.com/NaturallyElla" cooking)
-				("http://feeds.feedburner.com/CoolTools" fun)
-				("http://feeds.feedburner.com/nofilmschool/" film)
-				("http://love-python.blogspot.com/feeds/posts/default" dev)
-				("http://feeds.feedburner.com/CssTricks" dev)
-				("http://feeds.feedburner.com/Bludice" dev)
-				("http://www.raywenderlich.com/category/swift/feed" dev)
-				("https://www.hackingwithswift.com/articles/rss" dev)
-				("http://feeds.feedburner.com/Catswhocode" dev)
-				("http://www.techiedelight.com/feed/" dev)
-				("http://feeds.feedburner.com/catonmat" dev)
-				("http://feeds.feedburner.com/filmmakeriq" film)
-				("http://osxdaily.com/feed/" tech)
-				("http://feeds.feedburner.com/Noupe" dev)
-				("http://feeds.feedburner.com/design-milk" art)
-				("http://feeds.feedburner.com/weburbanist" art)
-				("http://feeds.feedburner.com/colossal" art)
-				("http://rss1.smashingmagazine.com/feed/" dev)
-				("http://penpaperpencil.net/rss" pencils)
-				("http://www.pencilrevolution.com/feed/" pencils)
-				("http://feeds.feedburner.com/NotebookStories" pencils)
-				("http://wellappointeddesk.com/feed/" pencils)
-				("http://feeds.feedburner.com/penaddict/XQKI" pencils)
-				("http://therecordingrevolution.com/feed/" music)
-				("http://www.soundonsound.com/news/sosrssfeed.php" music)
-				("http://www.gearjunkies.com/feed/" music)
-				("http://www.factmag.com/feed/" music)
-				("https://feedity.com/musicradar-com/VFtaWlJW.rss" music)
-				("http://www.theguitarjournal.com/feed/" music)
-				("http://www.premierguitar.com/rss/Magazine.aspx" music)
-				("http://www.carryology.com/feed/" fun)
-				("http://xkcd.com/rss.xml" fun)
-				("http://www.laist.com/index.rdf" general)
-				("http://feeds.feedburner.com/thesartorialist" fasion)
-				("https://cdm.link/feed/" music)
-				("https://www.creativefieldrecording.com/feed/" music)
-				("https://pedals.thedelimagazine.com/feed/" music)
-				("https://chessimprover.com/feed/" chess)
-				("http://iheartguitarblog.com/feed" music)
-				("https://www.gearnews.com/zone/guitar/feed/" music)))
+      (setq elfeed-feeds
+	    '(("http://feeds.feedburner.com/brainpickings/rss" general)
+	      ("http://feeds.feedburner.com/OpenCulture" general)
+	      ("http://feeds.feedburner.com/universetoday/pYdq" science)
+	      ("http://feeds.101cookbooks.com/101cookbooks" cooking)
+	      ("http://withfoodandlove.com/feed/" cooking)
+	      ("http://feeds.feedburner.com/NaturallyElla" cooking)
+	      ("http://feeds.feedburner.com/CoolTools" fun)
+	      ("http://feeds.feedburner.com/nofilmschool/" film)
+	      ("http://love-python.blogspot.com/feeds/posts/default" dev)
+	      ("http://feeds.feedburner.com/CssTricks" dev)
+	      ("https://www.hackingwithswift.com/articles/rss" dev)
+	      ("http://feeds.feedburner.com/Catswhocode" dev)
+	      ("http://www.techiedelight.com/feed/" dev)
+	      ("http://feeds.feedburner.com/filmmakeriq" film)
+	      ("http://osxdaily.com/feed/" tech)
+	      ("http://feeds.feedburner.com/design-milk" art)
+	      ("http://feeds.feedburner.com/weburbanist" art)
+	      ("http://feeds.feedburner.com/colossal" art)
+	      ("http://rss1.smashingmagazine.com/feed/" dev)
+	      ("http://www.pencilrevolution.com/feed/" pencils)
+	      ("http://feeds.feedburner.com/NotebookStories" pencils)
+	      ("http://wellappointeddesk.com/feed/" pencils)
+	      ("http://feeds.feedburner.com/penaddict/XQKI" pencils)
+	      ("http://therecordingrevolution.com/feed/" music)
+	      ("http://www.soundonsound.com/news/sosrssfeed.php" music)
+	      ("http://www.gearjunkies.com/feed/" music)
+	      ("http://www.factmag.com/feed/" music)
+	      ("https://feedity.com/musicradar-com/VFtaWlJW.rss" music)
+	      ("http://www.theguitarjournal.com/feed/" music)
+	      ("http://www.premierguitar.com/rss/Magazine.aspx" music)
+	      ("http://www.carryology.com/feed/" fun)
+	      ("http://xkcd.com/rss.xml" fun)
+	      ("http://www.laist.com/index.rdf" general)
+	      ("http://feeds.feedburner.com/thesartorialist" fasion)
+	      ("https://cdm.link/feed/" music)
+	      ("https://www.creativefieldrecording.com/feed/" music)
+	      ("https://pedals.thedelimagazine.com/feed/" music)
+	      ("https://chessimprover.com/feed/" chess)
+	      ("http://iheartguitarblog.com/feed" music)
+	      ("https://www.gearnews.com/zone/guitar/feed/" music)))
     #+END_SRC
 
 *** Eshell
